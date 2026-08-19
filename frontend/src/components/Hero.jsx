@@ -6,40 +6,58 @@ import {
 } from 'lucide-react';
 import { statsData } from '../data/placementsData';
 
+const localVideoFiles = import.meta.glob('../videos/*.mp4', {
+  eager: true,
+  import: 'default',
+});
+
+const findLocalVideo = (keywords) => {
+  const match = Object.entries(localVideoFiles).find(([path]) => {
+    const filename = path.toLowerCase();
+    return keywords.some((keyword) => filename.includes(keyword));
+  });
+
+  return match?.[1] || Object.values(localVideoFiles)[0];
+};
+
 const BACKGROUND_VIDEOS = [
   {
     id: 'coding',
     title: 'Full-Stack Coding Lab',
+    shortTitle: 'Coding Lab',
     category: 'Practical Software Training',
     icon: Code,
-    url: 'https://cdn.pixabay.com/video/2021/04/12/70884-536480980_large.mp4',
+    url: findLocalVideo(['building_websites', 'full_stack', 'tech_animation']),
     poster: '',
     description: 'Real-time coding labs for Java, Python, React, Node.js and modern full-stack development.'
   },
   {
     id: 'ai-tech',
     title: 'AI & Data Science',
+    shortTitle: 'AI & Data',
     category: 'Future Tech Skills',
     icon: Cpu,
-    url: 'https://cdn.pixabay.com/video/2019/04/23/23011-332483108_large.mp4',
+    url: findLocalVideo(['ai_developer', 'ai-powered', 'career_in-ai']),
     poster: '',
     description: 'Explore AI, machine learning, analytics and cloud-based innovation with guided mentorship.'
   },
   {
     id: 'campus',
     title: 'Career Campus Experience',
+    shortTitle: 'Campus',
     category: 'Mentorship & Learning',
     icon: GraduationCap,
-    url: 'https://cdn.pixabay.com/video/2020/05/25/40149-424074251_large.mp4',
+    url: findLocalVideo(['internship_career', 'initial_scene', 'promotional']),
     poster: '',
     description: 'A focused learning environment with personal guidance, project support and industry-ready coaching.'
   },
   {
     id: 'matrix',
     title: 'Testing & Cyber Skills',
+    shortTitle: 'Testing',
     category: 'Quality & Security',
     icon: Monitor,
-    url: 'https://cdn.pixabay.com/video/2016/09/21/5360-183787541_large.mp4',
+    url: findLocalVideo(['testing', 'tech_animation', 'ai-powered']),
     poster: '',
     description: 'Build confidence in automation testing, software quality, and security fundamentals for real jobs.'
   }
@@ -55,6 +73,23 @@ const Hero = ({ onOpenEnroll }) => {
   const videoRef = useRef(null);
 
   const currentVideo = BACKGROUND_VIDEOS[activeVideoIdx];
+
+  useEffect(() => {
+    if (!videoRef.current || !isVideoVisible) {
+      return;
+    }
+
+    const playVideo = async () => {
+      try {
+        await videoRef.current.play();
+      } catch (error) {
+        setIsPlaying(false);
+        console.warn('Background video could not autoplay:', error);
+      }
+    };
+
+    playVideo();
+  }, [activeVideoIdx, isVideoVisible]);
 
   // Handle play/pause toggle
   const togglePlay = () => {
@@ -80,10 +115,6 @@ const Hero = ({ onOpenEnroll }) => {
   const handleSelectVideo = (idx) => {
     setActiveVideoIdx(idx);
     setIsPlaying(true);
-    if (videoRef.current) {
-      videoRef.current.load();
-      videoRef.current.play().catch(err => console.log('Video play error:', err));
-    }
   };
 
   return (
@@ -99,7 +130,7 @@ const Hero = ({ onOpenEnroll }) => {
 
       {/* Background Educational Video Layer */}
       {isVideoVisible && (
-        <div style={{
+        <div className="video-selector-bar" style={{
           position: 'absolute',
           inset: 0,
           zIndex: 0,
@@ -113,6 +144,9 @@ const Hero = ({ onOpenEnroll }) => {
             playsInline
             preload="auto"
             poster={currentVideo.poster || undefined}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onError={() => setIsPlaying(false)}
             style={{
               width: '100%',
               height: '100%',
@@ -191,7 +225,7 @@ const Hero = ({ onOpenEnroll }) => {
           overflow: 'hidden'
         }}>
           {/* Active Video Indicator */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <div className="video-backdrop-label" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <span style={{
               width: '10px',
               height: '10px',
@@ -206,17 +240,19 @@ const Hero = ({ onOpenEnroll }) => {
               letterSpacing: '0.5px',
               color: isVideoVisible ? '#60a5fa' : '#2563eb'
             }}>
-              Live Educational Video Backdrop
+              <span className="video-label-full">Live Educational Video Backdrop</span>
+              <span className="video-label-short">Live Video Backdrop</span>
             </span>
           </div>
 
           {/* Theme Video Selector Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'nowrap', overflow: 'hidden' }}>
+          <div className="video-theme-buttons" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'nowrap', overflow: 'hidden' }}>
             {BACKGROUND_VIDEOS.map((vid, idx) => {
               const IconComp = vid.icon;
               const isActive = activeVideoIdx === idx;
               return (
                 <button
+                  className="video-theme-button"
                   key={vid.id}
                   onClick={() => handleSelectVideo(idx)}
                   style={{
@@ -236,7 +272,8 @@ const Hero = ({ onOpenEnroll }) => {
                   }}
                 >
                   <IconComp size={14} />
-                  <span>{vid.title}</span>
+                  <span className="video-title-full">{vid.title}</span>
+                  <span className="video-title-short">{vid.shortTitle}</span>
                 </button>
               );
             })}
@@ -348,7 +385,7 @@ const Hero = ({ onOpenEnroll }) => {
             </p>
 
             {/* Highlights Checklist Grid */}
-            <div style={{
+            <div className="hero-highlights" style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
               gap: '0.75rem 1.5rem',
@@ -377,7 +414,7 @@ const Hero = ({ onOpenEnroll }) => {
             </div>
 
             {/* Action Buttons */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <div className="hero-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
               <button
                 onClick={() => onOpenEnroll()}
                 className="btn btn-primary"
@@ -741,6 +778,11 @@ const Hero = ({ onOpenEnroll }) => {
       )}
 
       <style>{`
+        .video-label-short,
+        .video-title-short {
+          display: none;
+        }
+
         @media (max-width: 992px) {
           .hero-grid { grid-template-columns: 1fr !important; }
           .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
@@ -748,6 +790,45 @@ const Hero = ({ onOpenEnroll }) => {
         @media (max-width: 576px) {
           .stats-grid { grid-template-columns: 1fr !important; }
           h1 { font-size: 2.2rem !important; }
+          .video-selector-bar {
+            flex-wrap: wrap !important;
+            gap: 0.5rem !important;
+            padding: 0.5rem 0.65rem !important;
+            margin-bottom: 1.25rem !important;
+            border-radius: var(--radius-md) !important;
+          }
+          .video-backdrop-label {
+            flex: 1 1 auto;
+            min-width: 0;
+          }
+          .video-label-full,
+          .video-title-full {
+            display: none;
+          }
+          .video-label-short,
+          .video-title-short {
+            display: inline;
+          }
+          .video-backdrop-label .video-label-short {
+            font-size: 0.7rem;
+            letter-spacing: 0.25px;
+          }
+          .video-theme-buttons {
+            order: 3;
+            width: 100%;
+            overflow-x: auto !important;
+            scrollbar-width: none;
+            padding-bottom: 0.1rem;
+          }
+          .video-theme-buttons::-webkit-scrollbar {
+            display: none;
+          }
+          .video-theme-button {
+            flex: 0 0 auto;
+            padding: 0.3rem 0.55rem !important;
+            font-size: 0.7rem !important;
+            gap: 0.25rem !important;
+          }
         }
       `}</style>
     </section>

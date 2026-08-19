@@ -21,7 +21,7 @@ const Placements = () => {
         </div>
 
         {/* Hiring Partners Bar */}
-        <div style={{
+        <div className="placement-grid" style={{
           background: 'var(--light-card)',
           borderRadius: 'var(--radius-lg)',
           padding: '1.5rem 2rem',

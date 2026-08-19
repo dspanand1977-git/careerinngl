@@ -17,7 +17,7 @@ const Footer = ({ darkMode }) => {
       <div className="container">
         
         {/* Top Footer Grid */}
-        <div style={{
+        <div className="footer-bottom" style={{
           display: 'grid',
           gridTemplateColumns: '1.5fr 1fr 1fr 1.2fr',
           gap: '2.5rem',
@@ -107,7 +107,7 @@ const Footer = ({ darkMode }) => {
 
               <div style={{ display: 'flex', gap: '0.65rem', color: '#cbd5e1' }}>
                 <Mail size={18} color="#fbbf24" style={{ flexShrink: 0 }} />
-                <a href="mailto:info@careerin.co.in" style={{ color: '#cbd5e1' }}>info@careerin.co.in</a>
+                <a href="mailto:enquiry@careerin.co.in" style={{ color: '#cbd5e1' }}>enquiry@careerin.co.in</a>
               </div>
             </div>
           </div>

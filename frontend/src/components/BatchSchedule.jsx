@@ -22,7 +22,7 @@ const BatchSchedule = ({ onOpenEnroll }) => {
         </div>
 
         {/* Batches Grid */}
-        <div style={{
+        <div className="batch-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
           gap: '1.5rem'

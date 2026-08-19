@@ -19,7 +19,7 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
   return (
     <header className="sticky-navbar" style={{ position: 'sticky', top: 0, zIndex: 900 }}>
       {/* Top Info Bar */}
-      <div style={{
+      <div className="top-info-bar" style={{
         background: darkMode ? '#070b14' : '#0f172a',
         color: '#94a3b8',
         fontSize: '0.825rem',
@@ -42,7 +42,7 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
             </div>
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+          <div className="top-info-secondary" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#cbd5e1' }}>
               <Clock size={14} color="#fbbf24" />
               <span>Mon - Fri: 9:00 AM - 9:00 PM <small>Sat & Sun: WKND Batch</small></span>
@@ -63,11 +63,11 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
         borderBottom: darkMode ? '1px solid #1f2937' : '1px solid #e2e8f0',
         transition: 'background-color 0.3s ease'
       }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.85rem 1.5rem' }}>
+        <div className="container navbar-main-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.85rem 1.5rem' }}>
           
           {/* Logo */}
           <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', textDecoration: 'none' }}>
-            <div style={{
+            {/* <div style={{
               width: '42px',
               height: '42px',
               borderRadius: '12px',
@@ -80,10 +80,10 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
               flexShrink: 0
             }}>
               <GraduationCap size={24} />
-            </div>
+            </div> */}
             <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1, margin: 0 }}>
               <span style={{
-                fontSize: '1.45rem',
+                fontSize: '2rem',
                 fontWeight: 900,
                 letterSpacing: '-0.06em',
                 fontFamily: 'var(--font-heading)',
@@ -101,12 +101,11 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
                 marginTop: '3px',
                 color: darkMode ? '#cbd5e1' : '#475569',
                 letterSpacing: '0.08em',
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                marginLeft: '3px'
               }}>
-                Software Training Institute
-                <span style={{ display: 'block', marginTop: '1px', letterSpacing: '0.06em' }}>
                   A Part of CKS Solutions
-                </span>
+
               </span>
             </div>
           </a>
@@ -134,7 +133,7 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
           </div>
 
           {/* Right Action Items */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+          <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
             {/* Theme Toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
@@ -225,6 +224,14 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
       <style>{`
         @media (max-width: 900px) {
           .desktop-links { display: none !important; }
+        }
+        @media (max-width: 576px) {
+          .top-info-bar { display: none; }
+          .navbar-main-row { padding-top: 0.65rem !important; padding-bottom: 0.65rem !important; }
+          .navbar-main-row > a { min-width: 0; }
+          .navbar-main-row > a > div:last-child { display: none !important; }
+          .nav-actions .btn-primary { padding: 0.55rem !important; }
+          .nav-actions .btn-primary span { display: none; }
         }
         @media (min-width: 901px) {
           .mobile-menu-btn { display: none !important; }

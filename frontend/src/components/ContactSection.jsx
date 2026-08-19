@@ -102,7 +102,7 @@ const ContactSection = () => {
                 <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>(Landmark: Above the Raymond Showroom)</span>
               </div>
 
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div className="contact-actions" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <a
                   href="https://maps.google.com/?q=CareerIn+Vadasery+Nagercoil"
                   target="_blank"

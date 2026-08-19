@@ -72,7 +72,7 @@ const WhyChooseUs = () => {
         </div>
 
         {/* Feature Grid */}
-        <div style={{
+        <div className="why-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
           gap: '1.5rem'

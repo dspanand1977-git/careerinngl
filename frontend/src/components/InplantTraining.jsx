@@ -62,7 +62,7 @@ const InplantTraining = ({ onOpenEnroll }) => {
                 Designed specifically for Engineering (BE/B.Tech), Science (BSc CS/IT), and Computer Applications (BCA/MCA) students in Nagercoil & Kanyakumari district to gain real-world industrial exposure.
               </p>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2.25rem' }}>
+              <div className="ipt-features" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2.25rem' }}>
                 {[
                   { title: 'Live Project Assistance', desc: 'Hands-on major/minor project work' },
                   { title: 'ISO Verification Certificate', desc: 'Valid industrial training certificate' },

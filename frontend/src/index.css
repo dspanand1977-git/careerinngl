@@ -95,8 +95,35 @@ button {
 /* Container */
 .container {
   max-width: 1240px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}
+
+input,
+textarea,
+select,
+button {
+  max-width: 100%;
+}
+
+button,
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span {
+  overflow-wrap: anywhere;
 }
 
 /* Gradient Text */
@@ -257,8 +284,61 @@ button {
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+
   .section-title {
     font-size: 1.75rem;
+  }
+
+  section {
+    padding-top: 3.5rem !important;
+    padding-bottom: 3.5rem !important;
+  }
+
+  .hero-grid,
+  .contact-grid,
+  .ipt-grid {
+    gap: 2rem !important;
+  }
+
+  .course-grid,
+  .placement-grid,
+  .why-grid,
+  .batch-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 0.875rem;
+  }
+
+  .hero-highlights,
+  .ipt-features,
+  .course-card-actions {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .hero-actions {
+    align-items: stretch !important;
+    flex-direction: column;
+  }
+
+  .hero-actions > *,
+  .contact-actions > * {
+    width: 100%;
+  }
+
+  .footer-bottom {
+    align-items: stretch !important;
+    flex-direction: column;
+  }
+
+  .footer-bottom button {
+    align-self: flex-start;
   }
 }
 

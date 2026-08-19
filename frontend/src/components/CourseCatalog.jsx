@@ -41,7 +41,7 @@ const CourseCatalog = ({ onSelectCourse, onEnrollCourse }) => {
           marginBottom: '3rem'
         }}>
           {/* Search Bar */}
-          <div style={{
+          <div className="course-grid" style={{
             position: 'relative',
             width: '100%',
             maxWidth: '550px'
@@ -230,7 +230,7 @@ const CourseCatalog = ({ onSelectCourse, onEnrollCourse }) => {
                 </div>
 
                 {/* Footer Buttons */}
-                <div style={{
+                <div className="course-card-actions" style={{
                   display: 'grid',
                   gridTemplateColumns: '1fr 1fr',
                   gap: '0.75rem',
