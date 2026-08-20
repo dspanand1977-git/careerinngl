@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { X, Image as ImageIcon, Video } from 'lucide-react';
 
 const Gallery = ({ darkMode, onClose }) => {
   const [activeTab, setActiveTab] = useState('photos');
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const videoRefs = useRef([]);
+
+  const pauseOtherVideos = (playingVideo) => {
+    videoRefs.current.forEach((videoElement) => {
+      if (videoElement && videoElement !== playingVideo) {
+        videoElement.pause();
+      }
+    });
+  };
 
   const photoImports = import.meta.glob('../photos/*.{jpeg,jpg,png,webp}', {
     eager: true,
@@ -145,8 +154,9 @@ const Gallery = ({ darkMode, onClose }) => {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: '1.5rem'
+              gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 150px))',
+              justifyContent: 'center',
+              gap: '1.25rem'
             }}
           >
             {photos.map((photo, index) => (
@@ -278,8 +288,9 @@ const Gallery = ({ darkMode, onClose }) => {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-              gap: '1.5rem'
+              gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 250px))',
+              justifyContent: 'center',
+              gap: '1.25rem'
             }}
           >
             {videos.map((video, index) => (
@@ -309,11 +320,15 @@ const Gallery = ({ darkMode, onClose }) => {
                 }}
               >
                 <video
+                  ref={(videoElement) => {
+                    videoRefs.current[index] = videoElement;
+                  }}
                   controls
                   preload="metadata"
+                  onPlay={(event) => pauseOtherVideos(event.currentTarget)}
                   style={{
                     width: '100%',
-                    height: '280px',
+                    height: '190px',
                     objectFit: 'cover'
                   }}
                 >
