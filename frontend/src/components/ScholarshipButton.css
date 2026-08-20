@@ -1,0 +1,131 @@
+.scholarship-cta {
+  position: fixed;
+  right: 6.5rem;
+  bottom: 1.5rem;
+  z-index: 850;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 64px;
+  padding: 0.65rem 0.8rem 0.65rem 0.7rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 18px;
+  color: #fff;
+  background: linear-gradient(120deg, #f97316, #ea580c 46%, #c2410c);
+  box-shadow: 0 14px 30px rgba(194, 65, 12, 0.35), 0 0 0 5px rgba(249, 115, 22, 0.1);
+  cursor: pointer;
+  isolation: isolate;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.scholarship-cta::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 25%, rgba(255, 255, 255, 0.42) 48%, transparent 68%);
+  content: '';
+  transform: translateX(-130%);
+  animation: scholarship-shimmer 3.2s ease-in-out infinite;
+}
+
+.scholarship-cta:hover,
+.scholarship-cta:focus-visible {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 18px 34px rgba(194, 65, 12, 0.44), 0 0 0 7px rgba(249, 115, 22, 0.13);
+}
+
+.scholarship-cta:focus-visible {
+  outline: 3px solid rgba(251, 191, 36, 0.85);
+  outline-offset: 3px;
+}
+
+.scholarship-cta__orbit {
+  position: absolute;
+  top: -18px;
+  left: 36px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #facc15;
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.9);
+  animation: scholarship-orbit 2.8s linear infinite;
+}
+
+.scholarship-cta__icon,
+.scholarship-cta__arrow {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+}
+
+.scholarship-cta__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  color: #7c2d12;
+  background: #fef3c7;
+}
+
+.scholarship-cta__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.08rem;
+  white-space: nowrap;
+}
+
+.scholarship-cta__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #ffedd5;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.scholarship-cta__title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.scholarship-cta__arrow {
+  width: 30px;
+  height: 30px;
+  margin-left: 0.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(124, 45, 18, 0.25);
+}
+
+@keyframes scholarship-shimmer {
+  0%, 35% { transform: translateX(-130%); }
+  65%, 100% { transform: translateX(130%); }
+}
+
+@keyframes scholarship-orbit {
+  0%, 100% { transform: translate(0, 0); opacity: 0.45; }
+  50% { transform: translate(112px, 18px); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .scholarship-cta {
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scholarship-cta::before,
+  .scholarship-cta__orbit {
+    animation: none;
+  }
+
+  .scholarship-cta:hover,
+  .scholarship-cta:focus-visible {
+    transform: none;
+  }
+}

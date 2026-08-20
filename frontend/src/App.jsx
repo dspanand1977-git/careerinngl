@@ -10,6 +10,7 @@ import BatchSchedule from './components/BatchSchedule';
 import Gallery from './components/Gallery';
 import ContactSection from './components/ContactSection';
 import EnrollmentModal from './components/EnrollmentModal';
+import ScholarshipButton from './components/ScholarshipButton';
 import Footer from './components/Footer';
 import { Phone, MessageCircle } from 'lucide-react';
 
@@ -123,6 +124,8 @@ function App() {
         initialCourse={enrollCourse}
         initialSubject={enrollSubject}
       />
+
+      <ScholarshipButton onApply={() => handleOpenEnroll('Scholarship Application')} />
 
       {/* Floating Action Social & Phone Buttons */}
       <div style={{
