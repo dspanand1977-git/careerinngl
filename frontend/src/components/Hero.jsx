@@ -1,78 +1,55 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  ArrowRight, Play, Pause, Volume2, VolumeX, Eye, EyeOff, 
+  ArrowLeft, ArrowRight, Play, Pause, Volume2, VolumeX, Eye, EyeOff, 
   CheckCircle2, ShieldCheck, Sparkles, PhoneCall, Award, 
-  Laptop, Users, BookOpen, Code, Cpu, GraduationCap, X, Monitor
+  Laptop, Users, GraduationCap, X, Monitor
 } from 'lucide-react';
 import { statsData } from '../data/placementsData';
 
 const localVideoFiles = import.meta.glob('../videos/*.mp4', {
-  eager: true,
+  eager: true, //import all matching files immediately
   import: 'default',
 });
 
-const findLocalVideo = (keywords) => {
-  const match = Object.entries(localVideoFiles).find(([path]) => {
-    const filename = path.toLowerCase();
-    return keywords.some((keyword) => filename.includes(keyword));
-  });
-
-  return match?.[1] || Object.values(localVideoFiles)[0];
+const formatVideoTitle = (path) => {
+  const filename = path.split('/').pop().replace(/\.mp4$/i, '');
+  return filename
+    .replace(/[_-]+/g, ' ')
+    .replace(/\b\d{10,}\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 };
 
-const BACKGROUND_VIDEOS = [
-  {
-    id: 'coding',
-    title: 'Full-Stack Coding Lab',
-    shortTitle: 'Coding Lab',
-    category: 'Practical Software Training',
-    icon: Code,
-    url: findLocalVideo(['building_websites', 'full_stack', 'tech_animation']),
+const BACKGROUND_VIDEOS = Object.entries(localVideoFiles).map(([path, url], index) => {
+  const title = formatVideoTitle(path) || `Backdrop Video ${index + 1}`;
+
+  return {
+    id: path,
+    title,
+    shortTitle: `Video ${index + 1}`,
+    category: 'CareerIn Learning Experience',
+    icon: index % 2 === 0 ? Monitor : GraduationCap,
+    url,
     poster: '',
-    description: 'Real-time coding labs for Java, Python, React, Node.js and modern full-stack development.'
-  },
-  {
-    id: 'ai-tech',
-    title: 'AI & Data Science',
-    shortTitle: 'AI & Data',
-    category: 'Future Tech Skills',
-    icon: Cpu,
-    url: findLocalVideo(['ai_developer', 'ai-powered', 'career_in-ai']),
-    poster: '',
-    description: 'Explore AI, machine learning, analytics and cloud-based innovation with guided mentorship.'
-  },
-  {
-    id: 'campus',
-    title: 'Career Campus Experience',
-    shortTitle: 'Campus',
-    category: 'Mentorship & Learning',
-    icon: GraduationCap,
-    url: findLocalVideo(['internship_career', 'initial_scene', 'promotional']),
-    poster: '',
-    description: 'A focused learning environment with personal guidance, project support and industry-ready coaching.'
-  },
-  {
-    id: 'matrix',
-    title: 'Testing & Cyber Skills',
-    shortTitle: 'Testing',
-    category: 'Quality & Security',
-    icon: Monitor,
-    url: findLocalVideo(['testing', 'tech_animation', 'ai-powered']),
-    poster: '',
-    description: 'Build confidence in automation testing, software quality, and security fundamentals for real jobs.'
-  }
-];
+    description: `Watch ${title} as the CareerIn backdrop video.`
+  };
+});
 
 const Hero = ({ onOpenEnroll }) => {
   const [activeVideoIdx, setActiveVideoIdx] = useState(0);
+  const [videoPageStart, setVideoPageStart] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
-  const [isVideoVisible, setIsVideoVisible] = useState(true);
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isCampusVideoOpen, setIsCampusVideoOpen] = useState(false);
   const videoRef = useRef(null);
 
   const currentVideo = BACKGROUND_VIDEOS[activeVideoIdx];
+  const visibleVideos = BACKGROUND_VIDEOS.slice(videoPageStart, videoPageStart + 3);
+  const canShowPreviousVideos = videoPageStart > 0;
+  const canShowMoreVideos = videoPageStart + 3 < BACKGROUND_VIDEOS.length;
 
   useEffect(() => {
     if (!videoRef.current || !isVideoVisible) {
@@ -114,7 +91,16 @@ const Hero = ({ onOpenEnroll }) => {
   // Switch video background
   const handleSelectVideo = (idx) => {
     setActiveVideoIdx(idx);
+    setVideoPageStart(Math.floor(idx / 3) * 3);
     setIsPlaying(true);
+  };
+
+  const showPreviousVideos = () => {
+    setVideoPageStart(Math.max(0, videoPageStart - 3));
+  };
+
+  const showMoreVideos = () => {
+    setVideoPageStart(Math.min(Math.max(0, BACKGROUND_VIDEOS.length - 3), videoPageStart + 3));
   };
 
   return (
@@ -138,6 +124,7 @@ const Hero = ({ onOpenEnroll }) => {
         }}>
           <video
             ref={videoRef}
+            key={currentVideo.id}
             autoPlay
             loop
             muted={isMuted}
@@ -246,8 +233,31 @@ const Hero = ({ onOpenEnroll }) => {
           </div>
 
           {/* Theme Video Selector Buttons */}
+          <button
+            className="video-page-arrow"
+            onClick={showPreviousVideos}
+            disabled={!canShowPreviousVideos}
+            aria-label="Show previous backdrop videos"
+            title="Previous backdrop videos"
+            style={{
+              width: '28px',
+              height: '28px',
+              flexShrink: 0,
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: isVideoVisible ? 'rgba(255, 255, 255, 0.15)' : 'var(--light-bg)',
+              color: isVideoVisible ? '#ffffff' : 'var(--text-main)',
+              opacity: canShowPreviousVideos ? 1 : 0.35
+            }}
+          >
+            <ArrowLeft size={15} />
+          </button>
+
           <div className="video-theme-buttons" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'nowrap', overflow: 'hidden' }}>
-            {BACKGROUND_VIDEOS.map((vid, idx) => {
+            {visibleVideos.map((vid) => {
+              const idx = BACKGROUND_VIDEOS.indexOf(vid);
               const IconComp = vid.icon;
               const isActive = activeVideoIdx === idx;
               return (
@@ -255,6 +265,7 @@ const Hero = ({ onOpenEnroll }) => {
                   className="video-theme-button"
                   key={vid.id}
                   onClick={() => handleSelectVideo(idx)}
+                  title={vid.title}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -278,6 +289,28 @@ const Hero = ({ onOpenEnroll }) => {
               );
             })}
           </div>
+
+          <button
+            className="video-page-arrow"
+            onClick={showMoreVideos}
+            disabled={!canShowMoreVideos}
+            aria-label="Show more backdrop videos"
+            title="Next backdrop videos"
+            style={{
+              width: '28px',
+              height: '28px',
+              flexShrink: 0,
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: isVideoVisible ? 'rgba(255, 255, 255, 0.15)' : 'var(--light-bg)',
+              color: isVideoVisible ? '#ffffff' : 'var(--text-main)',
+              opacity: canShowMoreVideos ? 1 : 0.35
+            }}
+          >
+            <ArrowRight size={15} />
+          </button>
 
           {/* Video Control Action Buttons */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
@@ -815,10 +848,15 @@ const Hero = ({ onOpenEnroll }) => {
           }
           .video-theme-buttons {
             order: 3;
-            width: 100%;
+            flex: 1 1 auto;
+            width: auto;
+            min-width: 0;
             overflow-x: auto !important;
             scrollbar-width: none;
             padding-bottom: 0.1rem;
+          }
+          .video-page-arrow {
+            order: 3;
           }
           .video-theme-buttons::-webkit-scrollbar {
             display: none;
