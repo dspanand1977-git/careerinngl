@@ -43,12 +43,15 @@ const Hero = ({ onOpenEnroll }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+  const [isSmallPhonePortrait, setIsSmallPhonePortrait] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isCampusVideoOpen, setIsCampusVideoOpen] = useState(false);
   const videoRef = useRef(null);
 
   const currentVideo = BACKGROUND_VIDEOS[activeVideoIdx];
   const shouldShowVideo = isVideoVisible && !isMobileView;
+  const shouldShowHero = !(isMobilePortrait && isSmallPhonePortrait);
   const visibleVideos = BACKGROUND_VIDEOS.slice(videoPageStart, videoPageStart + 3);
   const canShowPreviousVideos = videoPageStart > 0;
   const canShowMoreVideos = videoPageStart + 3 < BACKGROUND_VIDEOS.length;
@@ -56,7 +59,14 @@ const Hero = ({ onOpenEnroll }) => {
   useEffect(() => {
     const checkMobileView = () => {
       const mobile = window.innerWidth <= 768;
+      const portrait = window.matchMedia('(orientation: portrait)').matches;
+      const mobilePortrait = mobile && portrait;
+      const smallPhonePortrait = window.innerWidth <= 430 && portrait;
+
       setIsMobileView(mobile);
+      setIsMobilePortrait(mobilePortrait);
+      setIsSmallPhonePortrait(smallPhonePortrait);
+
       if (mobile) {
         setIsVideoVisible(false);
       }
@@ -64,8 +74,12 @@ const Hero = ({ onOpenEnroll }) => {
 
     checkMobileView();
     window.addEventListener('resize', checkMobileView);
+    window.addEventListener('orientationchange', checkMobileView);
 
-    return () => window.removeEventListener('resize', checkMobileView);
+    return () => {
+      window.removeEventListener('resize', checkMobileView);
+      window.removeEventListener('orientationchange', checkMobileView);
+    };
   }, []);
 
   useEffect(() => {
@@ -125,6 +139,10 @@ const Hero = ({ onOpenEnroll }) => {
   const showMoreVideos = () => {
     setVideoPageStart(Math.min(Math.max(0, BACKGROUND_VIDEOS.length - 3), videoPageStart + 3));
   };
+
+  if (!shouldShowHero) {
+    return null;
+  }
 
   return (
     <section id="hero" style={{
