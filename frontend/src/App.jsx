@@ -23,9 +23,9 @@ const SOCIAL_LINKS = {
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [enrollModalOpen, setEnrollModalOpen] = useState(false);
+  const [enrollModalOpen, setEnrollModalOpen] = useState(true);
   const [enrollCourse, setEnrollCourse] = useState(null);
-  const [enrollSubject, setEnrollSubject] = useState('');
+  const [enrollSubject, setEnrollSubject] = useState('General Admission Inquiry');
   const [showGallery, setShowGallery] = useState(false);
 
   useEffect(() => {

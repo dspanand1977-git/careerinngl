@@ -15,6 +15,25 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
 
   const [submitted, setSubmitted] = useState(false);
 
+  const modalTitle = (() => {
+    if (initialSubject) {
+      const subject = initialSubject.trim();
+
+      if (/scholarship/i.test(subject)) return 'Apply Scholarship';
+      if (/free demo|demo class|book free demo/i.test(subject)) return 'Book Free Demo';
+      if (/general admission/i.test(subject)) return 'General Admission Inquiry';
+      if (/counseling/i.test(subject)) return 'Counseling Request';
+      if (/batch reservation/i.test(subject)) return 'Reserve a Batch';
+      if (/in-plant|internship|training/i.test(subject)) return 'In-Plant Training Inquiry';
+      if (/course registration/i.test(subject)) return initialCourse ? `Enroll for ${initialCourse.title}` : 'Course Registration';
+
+      return subject;
+    }
+
+    if (initialCourse) return `Enroll for ${initialCourse.title}`;
+    return 'Enroll / Book Free Demo';
+  })();
+
   useEffect(() => {
     if (initialCourse) {
       setFormData(prev => ({ ...prev, course: initialCourse.title }));
@@ -63,39 +82,68 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px', padding: '0' }}>
-        
+      <div
+        className="modal-card"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: '470px',
+          width: 'min(92vw, 470px)',
+          padding: '0',
+          border: '1px solid rgba(99, 102, 241, 0.25)',
+          boxShadow: '0 25px 60px rgba(79, 70, 229, 0.28)',
+          background: 'linear-gradient(180deg, #ffffff 0%, #f8fbff 100%)'
+        }}
+      >
         {/* Header */}
         <div style={{
-          background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
+          background: 'linear-gradient(135deg, #f97316 0%, #f43f5e 20%, #8b5cf6 55%, #2563eb 100%)',
           color: 'white',
-          padding: '1.75rem 2rem',
+          padding: '1.4rem 1.25rem 1.2rem',
           position: 'relative',
-          flexShrink: 0
+          flexShrink: 0,
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2)'
         }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            background: 'rgba(255,255,255,0.15)',
+            backdropFilter: 'blur(6px)',
+            border: '1px solid rgba(255,255,255,0.3)',
+            borderRadius: '999px',
+            padding: '0.4rem 0.8rem',
+            fontSize: '0.72rem',
+            fontWeight: 700,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase'
+          }}>
+            Limited Seats
+          </div>
+
           <button
             onClick={onClose}
             style={{
               position: 'absolute',
-              top: '1.25rem',
-              right: '1.25rem',
+              top: '1rem',
+              right: '1rem',
               background: 'rgba(255, 255, 255, 0.2)',
               color: 'white',
               borderRadius: '50%',
-              width: '32px',
-              height: '32px',
+              width: '30px',
+              height: '30px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              border: '1px solid rgba(255,255,255,0.2)'
             }}
           >
-            <X size={18} />
+            <X size={16} />
           </button>
 
-          <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white', marginBottom: '0.25rem' }}>
-            {submitted ? 'Application Received!' : 'Enroll / Book Free Demo'}
+          <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'white', margin: '0.9rem 0 0.25rem' }}>
+            {submitted ? 'Application Received!' : modalTitle}
           </h3>
-          <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+          <p style={{ fontSize: '0.78rem', opacity: 0.92, margin: 0 }}>
             CareerIn Software Training Institute, Nagercoil
           </p>
         </div>
@@ -141,15 +189,15 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <form onSubmit={handleSubmit} style={{ padding: '1.4rem 1.2rem 1.3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             
             {/* Full Name */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text-main)' }}>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem', color: '#334155' }}>
                 Full Name *
               </label>
               <div style={{ position: 'relative' }}>
-                <User size={18} color="#94a3b8" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+                <User size={16} color="#94a3b8" style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)' }} />
                 <input
                   type="text"
                   required
@@ -158,26 +206,27 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   style={{
                     width: '100%',
-                    padding: '0.75rem 1rem 0.75rem 2.75rem',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--light-border)',
-                    background: 'var(--light-bg)',
-                    color: 'var(--text-main)',
-                    fontSize: '0.9rem',
-                    outline: 'none'
+                    padding: '0.72rem 0.9rem 0.72rem 2.5rem',
+                    borderRadius: '12px',
+                    border: '1px solid #dbeafe',
+                    background: '#f8fbff',
+                    color: '#0f172a',
+                    fontSize: '0.88rem',
+                    outline: 'none',
+                    boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.08)'
                   }}
                 />
               </div>
             </div>
 
             {/* Phone & Email Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="form-row-2">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.9rem' }} className="form-row-2">
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text-main)' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem', color: '#334155' }}>
                   Phone / WhatsApp *
                 </label>
                 <div style={{ position: 'relative' }}>
-                  <Phone size={18} color="#94a3b8" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+                  <Phone size={16} color="#94a3b8" style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)' }} />
                   <input
                     type="tel"
                     required
@@ -186,24 +235,25 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     style={{
                       width: '100%',
-                      padding: '0.75rem 1rem 0.75rem 2.75rem',
-                      borderRadius: 'var(--radius-md)',
-                      border: '1px solid var(--light-border)',
-                      background: 'var(--light-bg)',
-                      color: 'var(--text-main)',
-                      fontSize: '0.9rem',
-                      outline: 'none'
+                      padding: '0.72rem 0.9rem 0.72rem 2.5rem',
+                      borderRadius: '12px',
+                      border: '1px solid #dbeafe',
+                      background: '#f8fbff',
+                      color: '#0f172a',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.08)'
                     }}
                   />
                 </div>
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text-main)' }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem', color: '#334155' }}>
                   Email Address
                 </label>
                 <div style={{ position: 'relative' }}>
-                  <Mail size={18} color="#94a3b8" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+                  <Mail size={16} color="#94a3b8" style={{ position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)' }} />
                   <input
                     type="email"
                     placeholder="email@example.com"
@@ -211,13 +261,14 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     style={{
                       width: '100%',
-                      padding: '0.75rem 1rem 0.75rem 2.75rem',
-                      borderRadius: 'var(--radius-md)',
-                      border: '1px solid var(--light-border)',
-                      background: 'var(--light-bg)',
-                      color: 'var(--text-main)',
-                      fontSize: '0.9rem',
-                      outline: 'none'
+                      padding: '0.72rem 0.9rem 0.72rem 2.5rem',
+                      borderRadius: '12px',
+                      border: '1px solid #dbeafe',
+                      background: '#f8fbff',
+                      color: '#0f172a',
+                      fontSize: '0.88rem',
+                      outline: 'none',
+                      boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.08)'
                     }}
                   />
                 </div>
@@ -226,7 +277,7 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
 
             {/* Course Dropdown */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text-main)' }}>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem', color: '#334155' }}>
                 Course of Interest *
               </label>
               <select
@@ -234,13 +285,14 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
                 onChange={(e) => setFormData({ ...formData, course: e.target.value })}
                 style={{
                   width: '100%',
-                  padding: '0.75rem 1rem',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--light-border)',
-                  background: 'var(--light-bg)',
-                  color: 'var(--text-main)',
-                  fontSize: '0.9rem',
-                  outline: 'none'
+                  padding: '0.72rem 0.9rem',
+                  borderRadius: '12px',
+                  border: '1px solid #dbeafe',
+                  background: '#f8fbff',
+                  color: '#0f172a',
+                  fontSize: '0.88rem',
+                  outline: 'none',
+                  boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.08)'
                 }}
               >
                 {coursesData.map((c) => (
@@ -255,7 +307,7 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
 
             {/* Timing Preference */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text-main)' }}>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem', color: '#334155' }}>
                 Preferred Batch Slot
               </label>
               <select
@@ -263,13 +315,14 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
                 onChange={(e) => setFormData({ ...formData, timing: e.target.value })}
                 style={{
                   width: '100%',
-                  padding: '0.75rem 1rem',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--light-border)',
-                  background: 'var(--light-bg)',
-                  color: 'var(--text-main)',
-                  fontSize: '0.9rem',
-                  outline: 'none'
+                  padding: '0.72rem 0.9rem',
+                  borderRadius: '12px',
+                  border: '1px solid #dbeafe',
+                  background: '#f8fbff',
+                  color: '#0f172a',
+                  fontSize: '0.88rem',
+                  outline: 'none',
+                  boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.08)'
                 }}
               >
                 <option value="Morning Batch (9:30 AM - 11:30 AM)">Morning Batch (9:30 AM - 11:30 AM)</option>
@@ -281,7 +334,7 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
 
             {/* Note / Message */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text-main)' }}>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem', color: '#334155' }}>
                 Additional Message / Question
               </label>
               <textarea
@@ -291,14 +344,15 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 style={{
                   width: '100%',
-                  padding: '0.75rem 1rem',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--light-border)',
-                  background: 'var(--light-bg)',
-                  color: 'var(--text-main)',
-                  fontSize: '0.9rem',
+                  padding: '0.72rem 0.9rem',
+                  borderRadius: '12px',
+                  border: '1px solid #dbeafe',
+                  background: '#f8fbff',
+                  color: '#0f172a',
+                  fontSize: '0.88rem',
                   outline: 'none',
-                  resize: 'vertical'
+                  resize: 'vertical',
+                  boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.08)'
                 }}
               />
             </div>
@@ -307,7 +361,16 @@ const EnrollmentModal = ({ isOpen, onClose, initialCourse, initialSubject }) => 
             <button
               type="submit"
               className="btn btn-primary"
-              style={{ width: '100%', padding: '0.85rem', marginTop: '0.5rem', fontSize: '1rem' }}
+              style={{
+                width: '100%',
+                padding: '0.9rem 1rem',
+                marginTop: '0.1rem',
+                fontSize: '0.95rem',
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #f59e0b, #ef4444, #8b5cf6)',
+                border: 'none',
+                boxShadow: '0 12px 24px rgba(168, 85, 247, 0.28)'
+              }}
             >
               <Send size={18} />
               <span>Submit Registration Request</span>
