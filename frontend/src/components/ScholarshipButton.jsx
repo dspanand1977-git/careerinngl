@@ -80,20 +80,17 @@ const ScholarshipButton = ({ onApply }) => {
       onKeyDown={handleKeyDown}
       style={position ? { left: position.left, top: position.top, right: 'auto', bottom: 'auto' } : undefined}
       aria-label="Apply for a CareerIn scholarship"
-      title="Drag to move or press the arrow keys"
+      title="Avail Scholarship"
     >
       <span className="scholarship-cta__orbit" aria-hidden="true" />
       <span className="scholarship-cta__icon" aria-hidden="true">
         <GraduationCap size={22} strokeWidth={2.4} />
       </span>
       <span className="scholarship-cta__copy">
-        <span className="scholarship-cta__eyebrow">
-          <Sparkles size={12} /> Limited opportunity
-        </span>
-        <span className="scholarship-cta__title">Apply Scholarship</span>
+        <span className="scholarship-cta__title">Avail Scholarship</span>
       </span>
       <span className="scholarship-cta__arrow" aria-hidden="true">
-        <ArrowUpRight size={19} strokeWidth={2.5} />
+        <ArrowUpRight size={18} strokeWidth={2.5} />
       </span>
     </button>
   );

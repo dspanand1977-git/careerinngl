@@ -47,7 +47,11 @@ const Hero = ({ onOpenEnroll }) => {
   const [isSmallPhonePortrait, setIsSmallPhonePortrait] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isCampusVideoOpen, setIsCampusVideoOpen] = useState(false);
+  const [animatedStats, setAnimatedStats] = useState(statsData.map(() => 0));
+  const [statsVisible, setStatsVisible] = useState(false);
   const videoRef = useRef(null);
+  const statsRef = useRef(null);
+  const scrollAnimationKey = useRef(0);
 
   const currentVideo = BACKGROUND_VIDEOS[activeVideoIdx];
   const isLandscapeMobile = isMobileView && !isMobilePortrait;
@@ -69,7 +73,11 @@ const Hero = ({ onOpenEnroll }) => {
       setIsMobilePortrait(mobilePortrait);
       setIsSmallPhonePortrait(smallPhonePortrait);
 
-      if (landscapeMobile) {
+      if (!mobile) {
+        setIsVideoVisible(true);
+        setIsMuted(true);
+        setIsPlaying(true);
+      } else if (landscapeMobile) {
         setIsVideoVisible(true);
         setIsMuted(true);
         setIsPlaying(false);
@@ -87,12 +95,6 @@ const Hero = ({ onOpenEnroll }) => {
       window.removeEventListener('orientationchange', checkMobileView);
     };
   }, []);
-
-  useEffect(() => {
-    if (isMobileView) {
-      setIsVideoVisible(false);
-    }
-  }, [isMobileView]);
 
   useEffect(() => {
     if (!videoRef.current || !shouldShowVideo) {
@@ -118,6 +120,62 @@ const Hero = ({ onOpenEnroll }) => {
 
     playVideo();
   }, [activeVideoIdx, shouldShowVideo, isLandscapeMobile]);
+
+  useEffect(() => {
+    const handleScrollAnimation = () => {
+      if (!statsRef.current) return;
+
+      const rect = statsRef.current.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
+
+      if (isVisible) {
+        scrollAnimationKey.current += 1;
+        setStatsVisible(false);
+        requestAnimationFrame(() => setStatsVisible(true));
+      } else {
+        setStatsVisible(false);
+      }
+    };
+
+    handleScrollAnimation();
+    window.addEventListener('scroll', handleScrollAnimation, { passive: true });
+    window.addEventListener('resize', handleScrollAnimation);
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollAnimation);
+      window.removeEventListener('resize', handleScrollAnimation);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!statsVisible) return;
+
+    const duration = 1800;
+    const startTime = performance.now();
+    let animationFrameId;
+
+    const animate = (currentTime) => {
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      const eased = progress < 0.5
+        ? 2 * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+      setAnimatedStats(
+        statsData.map((stat) => {
+          const raw = Number.parseFloat(stat.value.replace(/[^0-9.]/g, '')) || 0;
+          return Number((raw * eased).toFixed(raw % 1 === 0 ? 0 : 1));
+        })
+      );
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [statsVisible, scrollAnimationKey.current]);
 
   // Handle play/pause toggle
   const togglePlay = () => {
@@ -162,8 +220,8 @@ const Hero = ({ onOpenEnroll }) => {
     <section id="hero" style={{
       position: 'relative',
       overflow: 'hidden',
-      padding: '4rem 0 3.5rem',
-      minHeight: '85vh',
+      padding: '3rem 0 2.5rem',
+      minHeight: '72vh',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center'
@@ -435,21 +493,27 @@ const Hero = ({ onOpenEnroll }) => {
         {/* Hero Main Content Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '1.2fr 0.8fr',
-          gap: '3rem',
-          alignItems: 'center'
+          gridTemplateColumns: '1fr',
+          gap: '2.25rem',
+          alignItems: 'center',
+          justifyItems: 'center'
         }} className="hero-grid">
 
-          {/* Left Column Text & Call-To-Action */}
-          <div>
+          {/* Centered Text & Call-To-Action */}
+          <div style={{ textAlign: 'center', margin: '0 auto', width: '100%', maxWidth: '860px' }}>
             {/* Top Badge */}
             <div 
               className="section-tag animate-pulse-glow" 
               style={{ 
-                marginBottom: '1.25rem',
+                marginBottom: '1rem',
+                justifyContent: 'center',
                 color: isVideoVisible ? '#93c5fd' : undefined,
                 background: isVideoVisible ? 'rgba(37, 99, 235, 0.3)' : undefined,
-                border: isVideoVisible ? '1px solid rgba(147, 197, 253, 0.3)' : undefined
+                border: isVideoVisible ? '1px solid rgba(147, 197, 253, 0.3)' : undefined,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                padding: '0.5rem 1rem',
+                fontSize: '0.8rem'
               }}
             >
               <Sparkles size={16} color={isVideoVisible ? '#93c5fd' : '#2563eb'} />
@@ -458,62 +522,42 @@ const Hero = ({ onOpenEnroll }) => {
 
             {/* Main Headline */}
             <h1 style={{
-              fontSize: '3.1rem',
+              fontSize: 'clamp(2.4rem, 4vw, 4rem)',
               fontWeight: 800,
-              lineHeight: 1.15,
-              marginBottom: '1.25rem',
-              letterSpacing: '-1px',
-              color: isVideoVisible ? '#ffffff' : 'var(--text-main)'
+              lineHeight: 1.08,
+              marginBottom: '1.35rem',
+              letterSpacing: '-1.5px',
+              color: isVideoVisible ? '#ffffff' : 'var(--text-main)',
+              textAlign: 'center',
+              maxWidth: '860px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              textShadow: isVideoVisible ? '0 8px 28px rgba(15, 23, 42, 0.35)' : 'none'
             }}>
-              Accelerate Your IT Career with <span className="gradient-text" style={{ textShadow: isVideoVisible ? '0 0 20px rgba(6, 182, 212, 0.4)' : 'none' }}>Hands-On Software</span> Training & Placement
+              Accelerate Your IT Career with <span className="gradient-text" style={{ textShadow: isVideoVisible ? '0 0 20px rgba(6, 182, 212, 0.45)' : 'none' }}>Hands-On Software</span> Training & Placement
             </h1>
 
-            {/* Subtext */}
-            <p style={{
-              fontSize: '1.1rem',
-              color: isVideoVisible ? '#e2e8f0' : 'var(--text-muted)',
-              marginBottom: '2rem',
-              maxWidth: '620px',
-              lineHeight: 1.6
-            }}>
-              Master Java, Python, .NET, Full Stack Development, React, Software Testing & Digital Marketing with industry mentors. Get 100% practical lab experience, in-plant training, and dedicated placement assistance.
-            </p>
-
-            {/* Highlights Checklist Grid */}
-            <div className="hero-highlights" style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '0.75rem 1.5rem',
-              marginBottom: '2.25rem'
-            }}>
-              {[
-                '100% Practical Lab Training',
-                'Air-Conditioned Lab Facility',
-                'No Personal Laptop Required',
-                '1-on-1 Industry Mentorship',
-                'In-Plant & Internship Certificate',
-                '100% Placement & Mock Interviews'
-              ].map((item, idx) => (
-                <div key={idx} style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '0.5rem', 
-                  fontSize: '0.95rem', 
-                  fontWeight: 500,
-                  color: shouldShowVideo ? '#f8fafc' : 'var(--text-main)'
-                }}>
-                  <CheckCircle2 size={18} color="#10b981" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-
             {/* Action Buttons */}
-            <div className="hero-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <div className="hero-actions" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
               <button
                 onClick={() => onOpenEnroll()}
                 className="btn btn-primary"
-                style={{ padding: '0.85rem 1.75rem', fontSize: '1rem' }}
+                style={{
+                  padding: '0.8rem 1.5rem',
+                  fontSize: '0.98rem',
+                  boxShadow: '0 12px 24px rgba(37, 99, 235, 0.22)',
+                  border: '1px solid rgba(59, 130, 246, 0.35)',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 16px 30px rgba(37, 99, 235, 0.28)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(37, 99, 235, 0.22)';
+                }}
               >
                 <span>Book Free Demo Class</span>
                 <ArrowRight size={18} />
@@ -523,12 +567,23 @@ const Hero = ({ onOpenEnroll }) => {
                 onClick={() => setIsCampusVideoOpen(true)}
                 className="btn"
                 style={{
-                  padding: '0.85rem 1.5rem',
-                  fontSize: '1rem',
+                  padding: '0.8rem 1.3rem',
+                  fontSize: '0.96rem',
                   background: isVideoVisible ? 'rgba(255, 255, 255, 0.15)' : 'var(--light-card)',
                   color: shouldShowVideo ? '#ffffff' : 'var(--primary)',
                   border: shouldShowVideo ? '1px solid rgba(255, 255, 255, 0.3)' : '1.5px solid var(--primary)',
-                  backdropFilter: 'blur(8px)'
+                  backdropFilter: 'blur(8px)',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  boxShadow: '0 8px 18px rgba(15, 23, 42, 0.08)',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(15, 23, 42, 0.12)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 8px 18px rgba(15, 23, 42, 0.08)';
                 }}
               >
                 <Play size={18} fill={isVideoVisible ? '#ffffff' : 'var(--primary)'} />
@@ -538,7 +593,21 @@ const Hero = ({ onOpenEnroll }) => {
               <a
                 href="tel:+919498029898"
                 className="btn btn-accent"
-                style={{ padding: '0.85rem 1.25rem', fontSize: '0.95rem' }}
+                style={{
+                  padding: '0.8rem 1.15rem',
+                  fontSize: '0.92rem',
+                  boxShadow: '0 8px 18px rgba(14, 116, 144, 0.15)',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(14, 116, 144, 0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 8px 18px rgba(14, 116, 144, 0.15)';
+                }}
               >
                 <PhoneCall size={18} />
                 <span>Call Now</span>
@@ -547,17 +616,20 @@ const Hero = ({ onOpenEnroll }) => {
 
           </div>
 
-          {/* Right Column Feature Card */}
-          <div style={{ position: 'relative' }}>
+          {/* Feature Card Below Centered Content */}
+          <div style={{ position: 'relative', width: '100%', maxWidth: '700px' }}>
             <div className="glass-panel" style={{
               borderRadius: 'var(--radius-lg)',
-              padding: '2rem',
-              boxShadow: 'var(--shadow-lg)',
+              padding: '1.5rem',
+              boxShadow: isVideoVisible ? '0 18px 50px rgba(15, 23, 42, 0.35)' : '0 16px 40px rgba(15, 23, 42, 0.08)',
               border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid var(--light-border)',
-              background: isVideoVisible ? 'rgba(15, 23, 42, 0.75)' : undefined,
+              background: isVideoVisible ? 'rgba(15, 23, 42, 0.76)' : 'rgba(255, 255, 255, 0.82)',
               color: isVideoVisible ? '#ffffff' : undefined,
               position: 'relative',
-              zIndex: 2
+              zIndex: 2,
+              margin: '0 auto',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)'
             }}>
               {/* Highlight Header */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
@@ -684,36 +756,58 @@ const Hero = ({ onOpenEnroll }) => {
         </div>
 
         {/* Stats Counter Bar */}
-        <div style={{
-          marginTop: '3.5rem',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '1.25rem'
-        }} className="stats-grid">
-          {statsData.map((stat, idx) => (
-            <div key={idx} className="glass-panel" style={{
-              padding: '1.5rem',
-              borderRadius: 'var(--radius-md)',
-              textAlign: 'center',
-              border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid var(--light-border)',
-              background: isVideoVisible ? 'rgba(15, 23, 42, 0.65)' : undefined,
-              backdropFilter: 'blur(10px)',
-              transition: 'transform 0.2s ease'
-            }}>
-              <div style={{
-                fontSize: '2.25rem',
-                fontWeight: 800,
-                color: isVideoVisible ? '#60a5fa' : '#2563eb',
-                fontFamily: 'var(--font-heading)',
-                marginBottom: '0.25rem'
-              }}>
-                {stat.value}
+        <div
+          ref={statsRef}
+          style={{
+            marginTop: '3.5rem',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+            gap: '1.25rem',
+            alignItems: 'stretch'
+          }}
+          className="stats-grid"
+        >
+          {statsData.map((stat, idx) => {
+            const targetValue = Number.parseFloat(stat.value.replace(/[^0-9.]/g, '')) || 0;
+            const suffix = stat.value.includes('+') ? '+' : stat.value.includes('%') ? '%' : '';
+            const formattedValue = animatedStats[idx] ?? 0;
+
+            return (
+              <div key={idx} className="glass-panel" style={{
+                padding: '1.5rem 1rem',
+                borderRadius: 'var(--radius-md)',
+                textAlign: 'center',
+                border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid var(--light-border)',
+                background: isVideoVisible ? 'rgba(15, 23, 42, 0.65)' : 'rgba(255, 255, 255, 0.82)',
+                backdropFilter: 'blur(10px)',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                boxShadow: isVideoVisible ? '0 12px 28px rgba(15, 23, 42, 0.18)' : '0 10px 22px rgba(15, 23, 42, 0.06)',
+                cursor: 'default'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+              >
+                <div style={{
+                  fontSize: '2.25rem',
+                  fontWeight: 800,
+                  color: isVideoVisible ? '#60a5fa' : '#2563eb',
+                  fontFamily: 'var(--font-heading)',
+                  marginBottom: '0.25rem'
+                }}>
+                  {targetValue >= 1000
+                    ? `${Math.round(formattedValue).toLocaleString()}${suffix}`
+                    : `${Number(formattedValue.toFixed(targetValue % 1 === 0 ? 0 : 1))}${suffix}`}
+                </div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: isVideoVisible ? '#cbd5e1' : 'var(--text-muted)' }}>
+                  {stat.label}
+                </div>
               </div>
-              <div style={{ fontSize: '0.9rem', fontWeight: 600, color: isVideoVisible ? '#cbd5e1' : 'var(--text-muted)' }}>
-                {stat.label}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>

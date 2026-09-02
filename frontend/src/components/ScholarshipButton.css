@@ -5,35 +5,50 @@
   z-index: 850;
   display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
-  min-height: 64px;
-  padding: 0.65rem 0.8rem 0.65rem 0.7rem;
+  justify-content: center;
+  gap: 0;
+  width: 58px;
+  min-width: 58px;
+  min-height: 58px;
+  padding: 0.45rem 0.5rem;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 18px;
+  border-radius: 50%;
   color: #fff;
   background: linear-gradient(120deg, #f97316, #ea580c 46%, #c2410c);
   box-shadow: 0 14px 30px rgba(194, 65, 12, 0.35), 0 0 0 5px rgba(249, 115, 22, 0.1);
   cursor: pointer;
   isolation: isolate;
   touch-action: none;
-  transition: transform 220ms ease, box-shadow 220ms ease;
+  transition: width 260ms ease, min-width 260ms ease, padding 260ms ease, border-radius 260ms ease, transform 220ms ease, box-shadow 220ms ease;
 }
+
+.scholarship-cta > * {
+  position: relative;
+  z-index: 2;
+}
+
 
 .scholarship-cta::before {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 1;
   background: linear-gradient(105deg, transparent 25%, rgba(255, 255, 255, 0.42) 48%, transparent 68%);
   content: '';
   transform: translateX(-130%);
   animation: scholarship-shimmer 3.2s ease-in-out infinite;
 }
 
+
 .scholarship-cta:hover,
 .scholarship-cta:focus-visible {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 18px 34px rgba(194, 65, 12, 0.44), 0 0 0 7px rgba(249, 115, 22, 0.13);
+  width: 214px;
+  min-width: 214px;
+  padding: 0.45rem 0.8rem 0.45rem 0.45rem;
+  justify-content: flex-start;
+  border-radius: 18px;
+  transform: translateY(-3px);
+  box-shadow: 0 18px 30px rgba(194, 65, 12, 0.32), 0 0 0 8px rgba(249, 115, 22, 0.1), 0 0 18px rgba(251, 146, 60, 0.35);
 }
 
 .scholarship-cta:focus-visible {
@@ -43,14 +58,17 @@
 
 .scholarship-cta__orbit {
   position: absolute;
-  top: -18px;
-  left: 36px;
+  top: 7px;
+  left: 50%;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background: #facc15;
   box-shadow: 0 0 14px rgba(250, 204, 21, 0.9);
+  transform: translateX(-50%);
   animation: scholarship-orbit 2.8s linear infinite;
+  pointer-events: none;
+  z-index: 3;
 }
 
 .scholarship-cta__icon,
@@ -63,43 +81,65 @@
 .scholarship-cta__icon {
   width: 42px;
   height: 42px;
-  border-radius: 13px;
+  border-radius: 50%;
   color: #7c2d12;
   background: #fef3c7;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 .scholarship-cta__copy {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.08rem;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateX(6px);
+  transition: width 260ms ease, max-width 260ms ease, opacity 230ms ease, transform 230ms ease, margin 230ms ease;
   white-space: nowrap;
 }
 
-.scholarship-cta__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: #ffedd5;
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.scholarship-cta:hover .scholarship-cta__copy,
+.scholarship-cta:focus-visible .scholarship-cta__copy {
+  width: 152px;
+  max-width: 152px;
+  opacity: 1;
+  transform: translateX(0);
+  margin-left: 0.45rem;
 }
 
 .scholarship-cta__title {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #fff;
+  white-space: nowrap;
+  display: inline-block;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.12);
 }
 
 .scholarship-cta__arrow {
-  width: 30px;
-  height: 30px;
-  margin-left: 0.1rem;
+  width: 26px;
+  height: 26px;
+  margin-left: 0.4rem;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   background: rgba(124, 45, 18, 0.25);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.scholarship-cta:hover .scholarship-cta__arrow,
+.scholarship-cta:focus-visible .scholarship-cta__arrow {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 @keyframes scholarship-shimmer {
