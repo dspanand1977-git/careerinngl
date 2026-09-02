@@ -228,10 +228,45 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
         @media (max-width: 576px) {
           .top-info-bar { display: none; }
           .navbar-main-row { padding-top: 0.65rem !important; padding-bottom: 0.65rem !important; }
-          .navbar-main-row > a { min-width: 0; }
-          .navbar-main-row > a > div:last-child { display: none !important; }
+          .navbar-main-row > a {
+            min-width: 0;
+            flex: 1 1 auto;
+            max-width: 52%;
+          }
+          .navbar-main-row > a > div:last-child {
+            display: flex !important;
+            min-width: 0;
+            opacity: 1 !important;
+          }
+          .navbar-main-row > a > div:last-child span:first-child {
+            font-size: 1.45rem !important;
+            letter-spacing: -0.05em !important;
+          }
+          .navbar-main-row > a > div:last-child span:last-child {
+            font-size: 0.42rem !important;
+            letter-spacing: 0.055em !important;
+            white-space: nowrap !important;
+            margin-left: 2px !important;
+          }
+          .nav-actions {
+            gap: 0.35rem !important;
+            flex-shrink: 0;
+          }
           .nav-actions .btn-primary { padding: 0.55rem !important; }
           .nav-actions .btn-primary span { display: none; }
+        }
+
+        @media (max-width: 420px) {
+          .navbar-main-row > a {
+            max-width: 48%;
+          }
+          .navbar-main-row > a > div:last-child span:first-child {
+            font-size: 1.28rem !important;
+          }
+          .navbar-main-row > a > div:last-child span:last-child {
+            font-size: 0.36rem !important;
+            letter-spacing: 0.04em !important;
+          }
         }
         @media (min-width: 901px) {
           .mobile-menu-btn { display: none !important; }

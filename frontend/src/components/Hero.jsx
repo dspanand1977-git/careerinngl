@@ -42,17 +42,34 @@ const Hero = ({ onOpenEnroll }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isCampusVideoOpen, setIsCampusVideoOpen] = useState(false);
   const videoRef = useRef(null);
 
   const currentVideo = BACKGROUND_VIDEOS[activeVideoIdx];
+  const shouldShowVideo = isVideoVisible && !isMobileView;
   const visibleVideos = BACKGROUND_VIDEOS.slice(videoPageStart, videoPageStart + 3);
   const canShowPreviousVideos = videoPageStart > 0;
   const canShowMoreVideos = videoPageStart + 3 < BACKGROUND_VIDEOS.length;
 
   useEffect(() => {
-    if (!videoRef.current || !isVideoVisible) {
+    const checkMobileView = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobileView(mobile);
+      if (mobile) {
+        setIsVideoVisible(false);
+      }
+    };
+
+    checkMobileView();
+    window.addEventListener('resize', checkMobileView);
+
+    return () => window.removeEventListener('resize', checkMobileView);
+  }, []);
+
+  useEffect(() => {
+    if (!videoRef.current || !shouldShowVideo) {
       return;
     }
 
@@ -66,7 +83,7 @@ const Hero = ({ onOpenEnroll }) => {
     };
 
     playVideo();
-  }, [activeVideoIdx, isVideoVisible]);
+  }, [activeVideoIdx, shouldShowVideo]);
 
   // Handle play/pause toggle
   const togglePlay = () => {
@@ -115,7 +132,7 @@ const Hero = ({ onOpenEnroll }) => {
     }}>
 
       {/* Background Educational Video Layer */}
-      {isVideoVisible && (
+      {shouldShowVideo && (
         <div className="video-selector-bar" style={{
           position: 'absolute',
           inset: 0,
@@ -156,16 +173,16 @@ const Hero = ({ onOpenEnroll }) => {
         position: 'absolute',
         inset: 0,
         zIndex: 1,
-        background: isVideoVisible 
+        background: shouldShowVideo 
           ? 'linear-gradient(135deg, rgba(15, 23, 42, 0.52) 0%, rgba(15, 23, 42, 0.35) 45%, rgba(9, 14, 24, 0.6) 100%)'
           : 'radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08) 0%, rgba(6, 182, 212, 0.03) 50%, transparent 100%)',
-        backdropFilter: isVideoVisible ? 'blur(2px)' : 'none',
-        WebkitBackdropFilter: isVideoVisible ? 'blur(2px)' : 'none',
+        backdropFilter: shouldShowVideo ? 'blur(2px)' : 'none',
+        WebkitBackdropFilter: shouldShowVideo ? 'blur(2px)' : 'none',
         transition: 'all 0.5s ease'
       }} />
 
       {/* Fallback Animated Gradient Glow Blobs */}
-      {!isVideoVisible && (
+      {!shouldShowVideo && (
         <>
           <div style={{
             position: 'absolute',
@@ -203,10 +220,10 @@ const Hero = ({ onOpenEnroll }) => {
           flexWrap: 'nowrap',
           gap: '0.75rem',
           marginBottom: '2rem',
-          background: isVideoVisible ? 'rgba(15, 23, 42, 0.65)' : 'rgba(255, 255, 255, 0.7)',
+          background: shouldShowVideo ? 'rgba(15, 23, 42, 0.65)' : 'rgba(255, 255, 255, 0.7)',
           padding: '0.6rem 1.25rem',
           borderRadius: 'var(--radius-full)',
-          border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid var(--light-border)',
+          border: shouldShowVideo ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid var(--light-border)',
           backdropFilter: 'blur(12px)',
           boxShadow: 'var(--shadow-md)',
           overflow: 'hidden'
@@ -438,7 +455,7 @@ const Hero = ({ onOpenEnroll }) => {
                   gap: '0.5rem', 
                   fontSize: '0.95rem', 
                   fontWeight: 500,
-                  color: isVideoVisible ? '#f8fafc' : 'var(--text-main)'
+                  color: shouldShowVideo ? '#f8fafc' : 'var(--text-main)'
                 }}>
                   <CheckCircle2 size={18} color="#10b981" />
                   <span>{item}</span>
@@ -464,8 +481,8 @@ const Hero = ({ onOpenEnroll }) => {
                   padding: '0.85rem 1.5rem',
                   fontSize: '1rem',
                   background: isVideoVisible ? 'rgba(255, 255, 255, 0.15)' : 'var(--light-card)',
-                  color: isVideoVisible ? '#ffffff' : 'var(--primary)',
-                  border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.3)' : '1.5px solid var(--primary)',
+                  color: shouldShowVideo ? '#ffffff' : 'var(--primary)',
+                  border: shouldShowVideo ? '1px solid rgba(255, 255, 255, 0.3)' : '1.5px solid var(--primary)',
                   backdropFilter: 'blur(8px)'
                 }}
               >
