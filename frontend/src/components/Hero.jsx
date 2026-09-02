@@ -69,6 +69,12 @@ const Hero = ({ onOpenEnroll }) => {
   }, []);
 
   useEffect(() => {
+    if (isMobileView) {
+      setIsVideoVisible(false);
+    }
+  }, [isMobileView]);
+
+  useEffect(() => {
     if (!videoRef.current || !shouldShowVideo) {
       return;
     }
@@ -368,8 +374,13 @@ const Hero = ({ onOpenEnroll }) => {
             </button>
 
             <button
-              onClick={() => setIsVideoVisible(!isVideoVisible)}
+              onClick={() => {
+                if (!isMobileView) {
+                  setIsVideoVisible(!isVideoVisible);
+                }
+              }}
               title={isVideoVisible ? 'Hide Video Backdrop' : 'Show Video Backdrop'}
+              disabled={isMobileView}
               style={{
                 width: '32px',
                 height: '32px',
@@ -379,7 +390,9 @@ const Hero = ({ onOpenEnroll }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.2s ease',
+                opacity: isMobileView ? 0.5 : 1,
+                cursor: isMobileView ? 'not-allowed' : 'pointer'
               }}
             >
               {isVideoVisible ? <EyeOff size={15} /> : <Eye size={15} />}
@@ -838,51 +851,27 @@ const Hero = ({ onOpenEnroll }) => {
           .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
         @media (max-width: 576px) {
+          #hero {
+            padding-top: 2.2rem !important;
+            padding-bottom: 2.2rem !important;
+            min-height: auto !important;
+          }
           .stats-grid { grid-template-columns: 1fr !important; }
           h1 { font-size: 2.2rem !important; }
           .video-selector-bar {
-            flex-wrap: wrap !important;
-            gap: 0.5rem !important;
-            padding: 0.5rem 0.65rem !important;
-            margin-bottom: 1.25rem !important;
-            border-radius: var(--radius-md) !important;
+            display: none !important;
           }
           .video-backdrop-label {
-            flex: 1 1 auto;
-            min-width: 0;
-          }
-          .video-label-full,
-          .video-title-full {
-            display: none;
-          }
-          .video-label-short,
-          .video-title-short {
-            display: inline;
-          }
-          .video-backdrop-label .video-label-short {
-            font-size: 0.7rem;
-            letter-spacing: 0.25px;
+            display: none !important;
           }
           .video-theme-buttons {
-            order: 3;
-            flex: 1 1 auto;
-            width: auto;
-            min-width: 0;
-            overflow-x: auto !important;
-            scrollbar-width: none;
-            padding-bottom: 0.1rem;
+            display: none !important;
           }
           .video-page-arrow {
-            order: 3;
+            display: none !important;
           }
-          .video-theme-buttons::-webkit-scrollbar {
-            display: none;
-          }
-          .video-theme-button {
-            flex: 0 0 auto;
-            padding: 0.3rem 0.55rem !important;
-            font-size: 0.7rem !important;
-            gap: 0.25rem !important;
+          .video-control-buttons {
+            display: none !important;
           }
         }
       `}</style>
