@@ -50,8 +50,9 @@ const Hero = ({ onOpenEnroll }) => {
   const videoRef = useRef(null);
 
   const currentVideo = BACKGROUND_VIDEOS[activeVideoIdx];
-  const shouldShowVideo = isVideoVisible && !isMobileView;
-  const shouldShowHero = !(isMobilePortrait && isSmallPhonePortrait);
+  const isLandscapeMobile = isMobileView && !isMobilePortrait;
+  const shouldShowVideo = isVideoVisible && !(isSmallPhonePortrait && isMobilePortrait);
+  const shouldShowHero = !(isSmallPhonePortrait && isMobilePortrait);
   const visibleVideos = BACKGROUND_VIDEOS.slice(videoPageStart, videoPageStart + 3);
   const canShowPreviousVideos = videoPageStart > 0;
   const canShowMoreVideos = videoPageStart + 3 < BACKGROUND_VIDEOS.length;
@@ -62,12 +63,17 @@ const Hero = ({ onOpenEnroll }) => {
       const portrait = window.matchMedia('(orientation: portrait)').matches;
       const mobilePortrait = mobile && portrait;
       const smallPhonePortrait = window.innerWidth <= 430 && portrait;
+      const landscapeMobile = mobile && !portrait;
 
       setIsMobileView(mobile);
       setIsMobilePortrait(mobilePortrait);
       setIsSmallPhonePortrait(smallPhonePortrait);
 
-      if (mobile) {
+      if (landscapeMobile) {
+        setIsVideoVisible(true);
+        setIsMuted(true);
+        setIsPlaying(false);
+      } else if (smallPhonePortrait) {
         setIsVideoVisible(false);
       }
     };
@@ -93,6 +99,14 @@ const Hero = ({ onOpenEnroll }) => {
       return;
     }
 
+    if (isLandscapeMobile) {
+      videoRef.current.pause();
+      videoRef.current.muted = true;
+      setIsMuted(true);
+      setIsPlaying(false);
+      return;
+    }
+
     const playVideo = async () => {
       try {
         await videoRef.current.play();
@@ -103,7 +117,7 @@ const Hero = ({ onOpenEnroll }) => {
     };
 
     playVideo();
-  }, [activeVideoIdx, shouldShowVideo]);
+  }, [activeVideoIdx, shouldShowVideo, isLandscapeMobile]);
 
   // Handle play/pause toggle
   const togglePlay = () => {
