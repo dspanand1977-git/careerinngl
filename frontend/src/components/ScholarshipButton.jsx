@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ArrowUpRight, GraduationCap, Sparkles } from 'lucide-react';
+import { ArrowUpRight, WalletCards } from 'lucide-react';
 import './ScholarshipButton.css';
 
 const ScholarshipButton = ({ onApply }) => {
@@ -84,10 +84,10 @@ const ScholarshipButton = ({ onApply }) => {
     >
       <span className="scholarship-cta__orbit" aria-hidden="true" />
       <span className="scholarship-cta__icon" aria-hidden="true">
-        <GraduationCap size={22} strokeWidth={2.4} />
+        <WalletCards size={19} strokeWidth={2.4} />
       </span>
       <span className="scholarship-cta__copy">
-        <span className="scholarship-cta__title">Avail Scholarship</span>
+        <span className="scholarship-cta__title">Scholarship</span>
       </span>
       <span className="scholarship-cta__arrow" aria-hidden="true">
         <ArrowUpRight size={18} strokeWidth={2.5} />

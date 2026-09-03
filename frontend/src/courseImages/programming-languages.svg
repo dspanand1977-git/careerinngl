@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" role="img" aria-labelledby="title desc">
+  <title id="title">Programming languages</title>
+  <desc id="desc">Colorful programming language symbols and code</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1e1b4b"/><stop offset="1" stop-color="#7c2d12"/></linearGradient></defs>
+  <rect width="800" height="480" fill="url(#bg)"/><circle cx="680" cy="90" r="130" fill="#f59e0b" opacity=".16"/><circle cx="90" cy="420" r="170" fill="#818cf8" opacity=".16"/>
+  <rect x="100" y="84" width="600" height="312" rx="24" fill="#111827" opacity=".94" stroke="#fbbf24" stroke-width="3"/><text x="150" y="190" fill="#fbbf24" font-size="92" font-family="monospace" font-weight="700">&lt;/&gt;</text><text x="330" y="182" fill="#f9fafb" font-size="32" font-family="monospace">JavaScript</text><text x="330" y="232" fill="#67e8f9" font-size="32" font-family="monospace">Python</text><text x="330" y="282" fill="#86efac" font-size="32" font-family="monospace">Java  C#</text><path d="M154 330h490" stroke="#f97316" stroke-width="12" stroke-linecap="round"/><circle cx="156" cy="330" r="7" fill="#fff"/><circle cx="646" cy="330" r="7" fill="#fff"/>
+</svg>

@@ -252,7 +252,7 @@ const Hero = ({ onOpenEnroll }) => {
               height: '100%',
               objectFit: 'cover',
               objectPosition: 'center',
-              filter: 'brightness(0.92) contrast(1.08) saturate(1.15)',
+              filter: 'brightness(0.98) contrast(1.14) saturate(1.2)',
               opacity: 1,
               background: '#020817',
               transition: 'opacity 0.5s ease-in-out'
@@ -270,10 +270,10 @@ const Hero = ({ onOpenEnroll }) => {
         inset: 0,
         zIndex: 1,
         background: shouldShowVideo 
-          ? 'linear-gradient(135deg, rgba(15, 23, 42, 0.52) 0%, rgba(15, 23, 42, 0.35) 45%, rgba(9, 14, 24, 0.6) 100%)'
+          ? 'linear-gradient(135deg, rgba(15, 23, 42, 0.38) 0%, rgba(15, 23, 42, 0.2) 45%, rgba(9, 14, 24, 0.48) 100%)'
           : 'radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.08) 0%, rgba(6, 182, 212, 0.03) 50%, transparent 100%)',
-        backdropFilter: shouldShowVideo ? 'blur(2px)' : 'none',
-        WebkitBackdropFilter: shouldShowVideo ? 'blur(2px)' : 'none',
+        backdropFilter: 'none',
+        WebkitBackdropFilter: 'none',
         transition: 'all 0.5s ease'
       }} />
 
@@ -500,7 +500,7 @@ const Hero = ({ onOpenEnroll }) => {
         }} className="hero-grid">
 
           {/* Centered Text & Call-To-Action */}
-          <div style={{ textAlign: 'center', margin: '0 auto', width: '100%', maxWidth: '860px' }}>
+          <div className="hero-main-copy" style={{ textAlign: 'center', margin: '0 auto', width: '100%', maxWidth: '860px' }}>
             {/* Top Badge */}
             <div 
               className="section-tag animate-pulse-glow" 
@@ -521,7 +521,7 @@ const Hero = ({ onOpenEnroll }) => {
             </div>
 
             {/* Main Headline */}
-            <h1 style={{
+            <h1 className="hero-headline" style={{
               fontSize: 'clamp(2.4rem, 4vw, 4rem)',
               fontWeight: 800,
               lineHeight: 1.08,
@@ -666,15 +666,18 @@ const Hero = ({ onOpenEnroll }) => {
 
               {/* Training Features */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{
-                  padding: '1rem',
-                  background: isVideoVisible ? 'rgba(255, 255, 255, 0.05)' : 'var(--light-bg)',
-                  borderRadius: 'var(--radius-md)',
-                  border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid var(--light-border)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem'
-                }}>
+                <div
+                  className="hero-feature-item hero-feature-item--1"
+                  style={{
+                    padding: '1rem',
+                    background: isVideoVisible ? 'rgba(255, 255, 255, 0.05)' : 'var(--light-bg)',
+                    borderRadius: 'var(--radius-md)',
+                    border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid var(--light-border)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem'
+                  }}
+                >
                   <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
                     <Laptop size={20} />
                   </div>
@@ -684,15 +687,18 @@ const Hero = ({ onOpenEnroll }) => {
                   </div>
                 </div>
 
-                <div style={{
-                  padding: '1rem',
-                  background: isVideoVisible ? 'rgba(255, 255, 255, 0.05)' : 'var(--light-bg)',
-                  borderRadius: 'var(--radius-md)',
-                  border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid var(--light-border)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem'
-                }}>
+                <div
+                  className="hero-feature-item hero-feature-item--2"
+                  style={{
+                    padding: '1rem',
+                    background: isVideoVisible ? 'rgba(255, 255, 255, 0.05)' : 'var(--light-bg)',
+                    borderRadius: 'var(--radius-md)',
+                    border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid var(--light-border)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem'
+                  }}
+                >
                   <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#16a34a' }}>
                     <Users size={20} />
                   </div>
@@ -702,15 +708,18 @@ const Hero = ({ onOpenEnroll }) => {
                   </div>
                 </div>
 
-                <div style={{
-                  padding: '1rem',
-                  background: isVideoVisible ? 'rgba(255, 255, 255, 0.05)' : 'var(--light-bg)',
-                  borderRadius: 'var(--radius-md)',
-                  border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid var(--light-border)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem'
-                }}>
+                <div
+                  className="hero-feature-item hero-feature-item--3"
+                  style={{
+                    padding: '1rem',
+                    background: isVideoVisible ? 'rgba(255, 255, 255, 0.05)' : 'var(--light-bg)',
+                    borderRadius: 'var(--radius-md)',
+                    border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid var(--light-border)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem'
+                  }}
+                >
                   <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#fff7ed', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ea580c' }}>
                     <ShieldCheck size={20} />
                   </div>
@@ -970,6 +979,66 @@ const Hero = ({ onOpenEnroll }) => {
         .video-label-short,
         .video-title-short {
           display: none;
+        }
+
+.hero-main-copy {
+          opacity: 0;
+          transform: translate3d(0, 20px, 0) scale(0.98);
+          animation: heroMainFlyIn 850ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .hero-feature-item {
+          position: relative;
+          opacity: 0;
+          transform: translate3d(0, 28px, 0) scale(0.96);
+          animation: heroFeatureFlyIn 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+          box-shadow: 0 12px 25px rgba(15, 23, 42, 0.04);
+          transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+        }
+
+        .hero-feature-item:hover {
+          transform: translate3d(0, -4px, 0) scale(1.01);
+          box-shadow: 0 14px 28px rgba(37, 99, 235, 0.12);
+        }
+
+        .hero-feature-item--1 { animation-delay: 120ms; }
+        .hero-feature-item--2 { animation-delay: 240ms; }
+        .hero-feature-item--3 { animation-delay: 360ms; }
+
+        @keyframes heroMainFlyIn {
+          0% {
+            opacity: 0;
+            transform: translate3d(0, 22px, 0) scale(0.98);
+            filter: blur(7px);
+          }
+          60% {
+            opacity: 1;
+            transform: translate3d(0, -4px, 0) scale(1.01);
+            filter: blur(0);
+          }
+          100% {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+            filter: blur(0);
+          }
+        }
+
+        @keyframes heroFeatureFlyIn {
+          0% {
+            opacity: 0;
+            transform: translate3d(0, 30px, 0) scale(0.96);
+            filter: blur(6px);
+          }
+          55% {
+            opacity: 1;
+            transform: translate3d(0, -6px, 0) scale(1.02);
+            filter: blur(0);
+          }
+          100% {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+            filter: blur(0);
+          }
         }
 
         @media (max-width: 992px) {

@@ -135,7 +135,7 @@ function App() {
         zIndex: 800,
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.75rem',
+        gap: '0.5rem',
         alignItems: 'center'
       }}>
         <a
@@ -144,20 +144,20 @@ function App() {
           rel="noreferrer"
           title="Chat on WhatsApp"
           style={{
-            width: '52px',
-            height: '52px',
+            width: '44px',
+            height: '44px',
             borderRadius: '50%',
             background: '#25d366',
             color: 'white',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 8px 20px rgba(37, 211, 102, 0.4)',
+            boxShadow: '0 6px 16px rgba(37, 211, 102, 0.35)',
             transition: 'transform 0.2s ease'
           }}
           className="floating-btn"
         >
-          <MessageCircle size={28} />
+          <MessageCircle size={23} strokeWidth={2.4} />
         </a>
 
           <a
@@ -167,17 +167,17 @@ function App() {
             title="Visit CareerIn on Facebook"
             aria-label="Visit CareerIn on Facebook"
             style={{
-              width: '46px',
-              height: '46px',
+              width: '38px',
+              height: '38px',
               borderRadius: '50%',
               background: '#1877f2',
               color: 'white',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 8px 20px rgba(24, 119, 242, 0.35)',
+              boxShadow: '0 5px 14px rgba(24, 119, 242, 0.3)',
               transition: 'transform 0.2s ease',
-              fontSize: '1.7rem',
+              fontSize: '1.3rem',
               fontWeight: 800,
               fontFamily: 'Arial, sans-serif'
             }}
@@ -193,17 +193,17 @@ function App() {
             title="Visit CareerIn on Instagram"
             aria-label="Visit CareerIn on Instagram"
             style={{
-              width: '46px',
-              height: '46px',
+              width: '38px',
+              height: '38px',
               borderRadius: '50%',
               background: 'linear-gradient(135deg, #833ab4, #fd1d1d 55%, #fcb045)',
               color: 'white',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 8px 20px rgba(225, 48, 108, 0.35)',
+              boxShadow: '0 5px 14px rgba(225, 48, 108, 0.3)',
               transition: 'transform 0.2s ease',
-              fontSize: '1.6rem',
+              fontSize: '1.25rem',
               fontWeight: 700,
               fontFamily: 'Arial, sans-serif'
             }}
@@ -219,17 +219,17 @@ function App() {
             title="Visit CareerIn on LinkedIn"
             aria-label="Visit CareerIn on LinkedIn"
             style={{
-              width: '46px',
-              height: '46px',
+              width: '38px',
+              height: '38px',
               borderRadius: '50%',
               background: '#0a66c2',
               color: 'white',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 8px 20px rgba(10, 102, 194, 0.35)',
+              boxShadow: '0 5px 14px rgba(10, 102, 194, 0.3)',
               transition: 'transform 0.2s ease',
-              fontSize: '1.25rem',
+              fontSize: '1rem',
               fontWeight: 800,
               fontFamily: 'Arial, sans-serif'
             }}
@@ -242,20 +242,20 @@ function App() {
           href="tel:+919498029898"
           title="Call CareerIn Hotline"
           style={{
-            width: '46px',
-            height: '46px',
+            width: '38px',
+            height: '38px',
             borderRadius: '50%',
             background: '#2563eb',
             color: 'white',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 8px 20px rgba(37, 99, 235, 0.4)',
+            boxShadow: '0 5px 14px rgba(37, 99, 235, 0.32)',
             transition: 'transform 0.2s ease'
           }}
           className="floating-btn"
         >
-          <Phone size={22} />
+          <Phone size={19} strokeWidth={2.4} />
         </a>
       </div>
 

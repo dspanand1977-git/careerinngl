@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" role="img" aria-labelledby="title desc">
+  <title id="title">Microsoft Office productivity</title>
+  <desc id="desc">Spreadsheet, presentation, and document productivity illustration</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1e3a8a"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs>
+  <rect width="800" height="480" fill="url(#bg)"/><circle cx="110" cy="90" r="120" fill="#93c5fd" opacity=".16"/><rect x="128" y="92" width="544" height="296" rx="18" fill="#f8fafc"/><rect x="158" y="124" width="180" height="234" rx="10" fill="#2563eb"/><path d="M198 174h98M198 214h98M198 254h70M198 294h98" stroke="#dbeafe" stroke-width="14" stroke-linecap="round"/><rect x="372" y="124" width="270" height="104" rx="10" fill="#d1fae5"/><path d="M404 194v-35M448 194v-63M492 194v-48M536 194v-80M580 194v-28" stroke="#10b981" stroke-width="22" stroke-linecap="round"/><rect x="372" y="252" width="270" height="106" rx="10" fill="#fef3c7"/><path d="M404 286h200M404 318h152M404 340h92" stroke="#d97706" stroke-width="12" stroke-linecap="round"/>
+</svg>
