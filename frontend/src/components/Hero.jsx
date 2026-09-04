@@ -5,6 +5,7 @@ import {
   Laptop, Users, GraduationCap, X, Monitor
 } from 'lucide-react';
 import { statsData } from '../data/placementsData';
+import VideoBackdropGuide from './VideoBackdropGuide';
 
 const localVideoFiles = import.meta.glob('../videos/*.mp4', {
   eager: true, //import all matching files immediately
@@ -36,9 +37,14 @@ const BACKGROUND_VIDEOS = Object.entries(localVideoFiles).map(([path, url], inde
   };
 });
 
+const defaultVideoIndex = Math.max(
+  0,
+  BACKGROUND_VIDEOS.findIndex((video) => video.id.toLowerCase().endsWith('/company.mp4'))
+);
+
 const Hero = ({ onOpenEnroll }) => {
-  const [activeVideoIdx, setActiveVideoIdx] = useState(0);
-  const [videoPageStart, setVideoPageStart] = useState(0);
+  const [activeVideoIdx, setActiveVideoIdx] = useState(defaultVideoIndex);
+  const [videoPageStart, setVideoPageStart] = useState(Math.floor(defaultVideoIndex / 3) * 3);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
@@ -490,6 +496,8 @@ const Hero = ({ onOpenEnroll }) => {
           </div>
         </div>
 
+        {shouldShowVideo && <VideoBackdropGuide />}
+
         {/* Hero Main Content Grid */}
         <div style={{
           display: 'grid',
@@ -545,18 +553,20 @@ const Hero = ({ onOpenEnroll }) => {
                 style={{
                   padding: '0.8rem 1.5rem',
                   fontSize: '0.98rem',
-                  boxShadow: '0 12px 24px rgba(37, 99, 235, 0.22)',
-                  border: '1px solid rgba(59, 130, 246, 0.35)',
+                  background: isVideoVisible ? 'rgba(37, 99, 235, 0.68)' : undefined,
+                  boxShadow: isVideoVisible ? '0 12px 24px rgba(15, 23, 42, 0.24)' : '0 12px 24px rgba(37, 99, 235, 0.22)',
+                  border: isVideoVisible ? '1px solid rgba(147, 197, 253, 0.55)' : '1px solid rgba(59, 130, 246, 0.35)',
+                  backdropFilter: 'blur(8px)',
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                   cursor: 'pointer'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = '0 16px 30px rgba(37, 99, 235, 0.28)';
+                  e.currentTarget.style.boxShadow = isVideoVisible ? '0 16px 30px rgba(15, 23, 42, 0.34)' : '0 16px 30px rgba(37, 99, 235, 0.28)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(37, 99, 235, 0.22)';
+                  e.currentTarget.style.boxShadow = isVideoVisible ? '0 12px 24px rgba(15, 23, 42, 0.24)' : '0 12px 24px rgba(37, 99, 235, 0.22)';
                 }}
               >
                 <span>Book Free Demo Class</span>
@@ -569,21 +579,21 @@ const Hero = ({ onOpenEnroll }) => {
                 style={{
                   padding: '0.8rem 1.3rem',
                   fontSize: '0.96rem',
-                  background: isVideoVisible ? 'rgba(255, 255, 255, 0.15)' : 'var(--light-card)',
+                  background: isVideoVisible ? 'rgba(15, 23, 42, 0.28)' : 'var(--light-card)',
                   color: shouldShowVideo ? '#ffffff' : 'var(--primary)',
                   border: shouldShowVideo ? '1px solid rgba(255, 255, 255, 0.3)' : '1.5px solid var(--primary)',
                   backdropFilter: 'blur(8px)',
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                  boxShadow: '0 8px 18px rgba(15, 23, 42, 0.08)',
+                  boxShadow: isVideoVisible ? '0 8px 18px rgba(15, 23, 42, 0.2)' : '0 8px 18px rgba(15, 23, 42, 0.08)',
                   cursor: 'pointer'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(15, 23, 42, 0.12)';
+                  e.currentTarget.style.boxShadow = isVideoVisible ? '0 12px 24px rgba(15, 23, 42, 0.3)' : '0 12px 24px rgba(15, 23, 42, 0.12)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 18px rgba(15, 23, 42, 0.08)';
+                  e.currentTarget.style.boxShadow = isVideoVisible ? '0 8px 18px rgba(15, 23, 42, 0.2)' : '0 8px 18px rgba(15, 23, 42, 0.08)';
                 }}
               >
                 <Play size={18} fill={isVideoVisible ? '#ffffff' : 'var(--primary)'} />
@@ -596,17 +606,20 @@ const Hero = ({ onOpenEnroll }) => {
                 style={{
                   padding: '0.8rem 1.15rem',
                   fontSize: '0.92rem',
-                  boxShadow: '0 8px 18px rgba(14, 116, 144, 0.15)',
+                  background: isVideoVisible ? 'rgba(6, 182, 212, 0.42)' : undefined,
+                  border: isVideoVisible ? '1px solid rgba(165, 243, 252, 0.55)' : undefined,
+                  boxShadow: isVideoVisible ? '0 8px 18px rgba(15, 23, 42, 0.2)' : '0 8px 18px rgba(14, 116, 144, 0.15)',
+                  backdropFilter: 'blur(8px)',
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                   cursor: 'pointer'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(14, 116, 144, 0.2)';
+                  e.currentTarget.style.boxShadow = isVideoVisible ? '0 12px 24px rgba(15, 23, 42, 0.3)' : '0 12px 24px rgba(14, 116, 144, 0.2)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 18px rgba(14, 116, 144, 0.15)';
+                  e.currentTarget.style.boxShadow = isVideoVisible ? '0 8px 18px rgba(15, 23, 42, 0.2)' : '0 8px 18px rgba(14, 116, 144, 0.15)';
                 }}
               >
                 <PhoneCall size={18} />
@@ -623,7 +636,7 @@ const Hero = ({ onOpenEnroll }) => {
               padding: '1.5rem',
               boxShadow: isVideoVisible ? '0 18px 50px rgba(15, 23, 42, 0.35)' : '0 16px 40px rgba(15, 23, 42, 0.08)',
               border: isVideoVisible ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid var(--light-border)',
-              background: isVideoVisible ? 'rgba(15, 23, 42, 0.76)' : 'rgba(255, 255, 255, 0.82)',
+              background: isVideoVisible ? 'rgba(15, 23, 42, 0.48)' : 'rgba(255, 255, 255, 0.82)',
               color: isVideoVisible ? '#ffffff' : undefined,
               position: 'relative',
               zIndex: 2,
@@ -976,6 +989,123 @@ const Hero = ({ onOpenEnroll }) => {
       )}
 
       <style>{`
+        .video-backdrop-guide {
+          position: absolute;
+          top: 1rem;
+          left: 1.5rem;
+          z-index: 4;
+          display: flex;
+          align-items: flex-start;
+          gap: 0.8rem;
+          width: min(420px, calc(100% - 3rem));
+          padding: 0.9rem 2.2rem 0.9rem 0.9rem;
+          color: #e0f2fe;
+          background: linear-gradient(115deg, rgba(255, 255, 255, 0.3), rgba(125, 211, 252, 0.12) 38%, rgba(8, 47, 73, 0.34));
+          border: 1px solid rgba(255, 255, 255, 0.48);
+          border-radius: 16px;
+          box-shadow: 0 18px 38px rgba(2, 8, 23, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.55), inset 0 -1px 0 rgba(125, 211, 252, 0.3), inset 0 0 18px rgba(186, 230, 253, 0.08);
+          backdrop-filter: blur(22px) saturate(165%);
+          -webkit-backdrop-filter: blur(22px) saturate(165%);
+          overflow: hidden;
+          animation: video-guide-in 0.35s ease both, glass-guide-float 5s ease-in-out 0.35s infinite;
+        }
+        .video-backdrop-guide::after {
+          content: '';
+          position: absolute;
+          top: -80%;
+          left: -25%;
+          width: 42%;
+          height: 260%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+          transform: rotate(22deg);
+          animation: glass-guide-sheen 6s ease-in-out 1s infinite;
+          pointer-events: none;
+        }
+        .video-backdrop-guide::before {
+          content: '';
+          position: absolute;
+          bottom: -7px;
+          left: 4.5rem;
+          width: 12px;
+          height: 12px;
+          background: rgba(25, 78, 110, 0.48);
+          border-right: 1px solid rgba(255, 255, 255, 0.48);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.48);
+          box-shadow: 3px 3px 8px rgba(2, 8, 23, 0.12);
+          transform: rotate(45deg);
+        }
+        .video-backdrop-guide-icon {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-shrink: 0;
+          padding: 0.45rem;
+          color: #facc15;
+          background: rgba(250, 204, 21, 0.14);
+          border-radius: 8px;
+        }
+        .video-backdrop-guide strong {
+          display: inline;
+          margin: 0;
+          color: #ffffff;
+          font-size: 0.87rem;
+        }
+        .video-backdrop-guide-copy {
+          position: relative;
+          z-index: 1;
+          min-width: 0;
+          white-space: nowrap;
+        }
+        .video-backdrop-guide p {
+          display: inline;
+          margin: 0;
+          color: #bae6fd;
+          font-size: 0.78rem;
+          line-height: 1.4;
+        }
+        .video-backdrop-guide p svg {
+          color: #facc15;
+          vertical-align: middle;
+        }
+        .video-backdrop-guide-close {
+          position: absolute;
+          top: 0.45rem;
+          right: 0.45rem;
+          display: flex;
+          padding: 0.25rem;
+          color: #bae6fd;
+          background: transparent;
+          border: 0;
+          border-radius: 50%;
+          cursor: pointer;
+          z-index: 2;
+        }
+        .video-backdrop-guide-close:hover,
+        .video-backdrop-guide-close:focus-visible {
+          color: #ffffff;
+          background: rgba(255, 255, 255, 0.14);
+          outline: none;
+        }
+        @keyframes video-guide-in {
+          from { opacity: 0; transform: translateY(-6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glass-guide-float {
+          0%, 100% { box-shadow: 0 18px 38px rgba(2, 8, 23, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.55), inset 0 -1px 0 rgba(125, 211, 252, 0.3), inset 0 0 18px rgba(186, 230, 253, 0.08); }
+          50% { box-shadow: 0 22px 44px rgba(2, 8, 23, 0.36), inset 0 1px 1px rgba(255, 255, 255, 0.65), inset 0 -1px 0 rgba(125, 211, 252, 0.38), inset 0 0 22px rgba(186, 230, 253, 0.14); }
+        }
+        @keyframes glass-guide-sheen {
+          0%, 65%, 100% { transform: translateX(-180%) rotate(22deg); }
+          82% { transform: translateX(430%) rotate(22deg); }
+        }
+        @media (max-width: 700px) {
+          .video-backdrop-guide {
+            top: 0.75rem;
+            left: 1rem;
+            width: calc(100% - 2rem);
+          }
+        }
+
         .video-label-short,
         .video-title-short {
           display: none;

@@ -1,20 +1,49 @@
-import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Sun, Moon, Menu, X, GraduationCap, ChevronRight, Clock } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Phone, Mail, MapPin, Sun, Moon, Menu, X, ChevronRight, Clock } from 'lucide-react';
 // Logo removed — restoring original textual brand
+
+const navLinks = [
+  { name: 'Home', href: '#hero' },
+  { name: 'Courses', href: '#courses' },
+  { name: 'In-Plant Training', href: '#inplant' },
+  { name: 'Placements', href: '#placements' },
+  { name: 'Gallery', href: '#gallery' },
+  { name: 'Why CareerIn', href: '#why-us' },
+  { name: 'Batches', href: '#batches' },
+  { name: 'Contact', href: '#contact' },
+];
 
 const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
 
-  const navLinks = [
-    { name: 'Home', href: '#hero' },
-    { name: 'Courses', href: '#courses' },
-    { name: 'In-Plant Training', href: '#inplant' },
-    { name: 'Placements', href: '#placements' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Why CareerIn', href: '#why-us' },
-    { name: 'Batches', href: '#batches' },
-    { name: 'Contact', href: '#contact' },
-  ];
+  useEffect(() => {
+    const updateActiveSection = () => {
+      const hashSection = window.location.hash.slice(1);
+      if (hashSection && navLinks.some((link) => link.href === `#${hashSection}`)) {
+        setActiveSection(hashSection);
+      }
+
+      const sections = navLinks
+        .map((link) => document.getElementById(link.href.slice(1)))
+        .filter(Boolean);
+      const activationLine = window.innerHeight * 0.35;
+      const visibleSection = sections
+        .filter((section) => section.getBoundingClientRect().top <= activationLine)
+        .at(-1);
+
+      setActiveSection(visibleSection?.id || sections[0]?.id || 'hero');
+    };
+
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('hashchange', updateActiveSection);
+
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection);
+      window.removeEventListener('hashchange', updateActiveSection);
+    };
+  }, []);
 
   return (
     <header className="sticky-navbar" style={{ position: 'sticky', top: 0, zIndex: 900 }}>
@@ -116,16 +145,19 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
               <a
                 key={link.name}
                 href={link.href}
+                aria-current={activeSection === link.href.slice(1) ? 'page' : undefined}
                 style={{
                   fontWeight: 600,
                   fontSize: '0.9rem',
                   letterSpacing: '0.02em',
-                  color: darkMode ? '#e2e8f0' : '#334155',
-                  transition: 'color 0.2s ease',
+                  color: activeSection === link.href.slice(1) ? '#2563eb' : (darkMode ? '#e2e8f0' : '#334155'),
+                  borderBottom: activeSection === link.href.slice(1) ? '2px solid #2563eb' : '2px solid transparent',
+                  paddingBottom: '0.25rem',
+                  transition: 'color 0.2s ease, border-color 0.2s ease',
                   textTransform: 'none'
                 }}
                 onMouseEnter={(e) => e.target.style.color = '#2563eb'}
-                onMouseLeave={(e) => e.target.style.color = darkMode ? '#e2e8f0' : '#334155'}
+                onMouseLeave={(e) => e.target.style.color = activeSection === link.href.slice(1) ? '#2563eb' : (darkMode ? '#e2e8f0' : '#334155')}
               >
                 {link.name}
               </a>
@@ -206,11 +238,12 @@ const Navbar = ({ darkMode, setDarkMode, onOpenEnroll }) => {
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
+                aria-current={activeSection === link.href.slice(1) ? 'page' : undefined}
                 style={{
                   padding: '0.5rem 0',
                   fontWeight: 600,
-                  color: darkMode ? '#f3f4f6' : '#1e293b',
-                  borderBottom: darkMode ? '1px solid #1f2937' : '1px solid #f1f5f9'
+                  color: activeSection === link.href.slice(1) ? '#2563eb' : (darkMode ? '#f3f4f6' : '#1e293b'),
+                  borderBottom: activeSection === link.href.slice(1) ? '2px solid #2563eb' : (darkMode ? '1px solid #1f2937' : '1px solid #f1f5f9')
                 }}
               >
                 {link.name}

@@ -126,7 +126,11 @@ const Footer = ({ darkMode }) => {
           fontSize: '0.85rem'
         }}>
           <div>
-            Crafted for <strong style={{ color: 'white' }}>CareerIn Nagercoil</strong> | Empowers Tech Aspirants Across Tamil Nadu
+            Crafted for <strong style={{ color: 'white' }}>CareerIn Nagercoil</strong> | Made with <Heart size={14} color="#f87171" style={{ verticalAlign: 'middle' }} /> by{' '}
+            <span className="creator-signature" tabIndex="0">
+              <span className="creator-mark">✦</span>
+              D.S.P. Anand
+            </span>
           </div>
 
           <button
@@ -157,6 +161,33 @@ const Footer = ({ darkMode }) => {
         }
         @media (max-width: 576px) {
           .footer-grid { grid-template-columns: 1fr !important; }
+        }
+        .creator-signature {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          color: #facc15;
+          font-weight: 800;
+          letter-spacing: 0.02em;
+          text-shadow: 0 0 14px rgba(250, 204, 21, 0.3);
+          transition: color 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
+          cursor: default;
+        }
+        .creator-mark {
+          color: #60a5fa;
+          font-size: 0.72rem;
+          transition: transform 0.2s ease;
+        }
+        .creator-signature:hover,
+        .creator-signature:focus-visible {
+          color: #fde68a;
+          transform: translateY(-2px);
+          text-shadow: 0 0 18px rgba(250, 204, 21, 0.62);
+          outline: none;
+        }
+        .creator-signature:hover .creator-mark,
+        .creator-signature:focus-visible .creator-mark {
+          transform: rotate(18deg) scale(1.2);
         }
       `}</style>
     </footer>
