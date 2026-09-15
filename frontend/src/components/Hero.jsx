@@ -542,8 +542,19 @@ const Hero = ({ onOpenEnroll }) => {
               marginRight: 'auto',
               textShadow: isVideoVisible ? '0 8px 28px rgba(15, 23, 42, 0.35)' : 'none'
             }}>
-              Accelerate Your IT Career with <span className="gradient-text" style={{ textShadow: isVideoVisible ? '0 0 20px rgba(6, 182, 212, 0.45)' : 'none' }}>Hands-On Software</span> Training & Placement
+              Accelerate Your IT Career with <span className="gradient-text" style={{ textShadow: isVideoVisible ? '0 0 20px rgba(6, 182, 212, 0.45)' : 'none' }}>Full Stack with AI</span>, Software Training & Placement
             </h1>
+
+            <p style={{
+              maxWidth: '760px',
+              margin: '0 auto 1.25rem',
+              color: isVideoVisible ? '#dbeafe' : 'var(--text-muted)',
+              fontSize: '0.98rem',
+              lineHeight: 1.6,
+              textAlign: 'center'
+            }}>
+              Build your career with practical software training and placement support, final year project guidance, soft skill and communication training, plus flexible online training.
+            </p>
 
             {/* Action Buttons */}
             <div className="hero-actions" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
